@@ -56,6 +56,7 @@
             this.IpAddress.Name = "IpAddress";
             this.IpAddress.Size = new System.Drawing.Size(100, 20);
             this.IpAddress.TabIndex = 1;
+            this.IpAddress.Text = "127.0.0.1";
             // 
             // button1
             // 
@@ -73,6 +74,7 @@
             this.Port.Name = "Port";
             this.Port.Size = new System.Drawing.Size(100, 20);
             this.Port.TabIndex = 4;
+            this.Port.Text = "15001";
             // 
             // label2
             // 
