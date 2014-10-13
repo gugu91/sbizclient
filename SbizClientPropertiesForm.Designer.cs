@@ -1,6 +1,6 @@
-﻿namespace SbizClientForms
+﻿namespace SbizClient
 {
-    partial class Form1
+    partial class SbizClientPropertiesForm
     {
         /// <summary>
         /// Variabile di progettazione necessaria.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SbizClientPropertiesForm));
             this.label1 = new System.Windows.Forms.Label();
             this.IpAddress = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -37,7 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.ConnectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.SbizClientConnectionStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,7 +63,7 @@
             this.button1.Location = new System.Drawing.Point(190, 134);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
+            this.button1.TabIndex = 4;
             this.button1.Text = "Connect";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -73,7 +73,7 @@
             this.Port.Location = new System.Drawing.Point(256, 76);
             this.Port.Name = "Port";
             this.Port.Size = new System.Drawing.Size(100, 20);
-            this.Port.TabIndex = 4;
+            this.Port.TabIndex = 2;
             this.Port.Text = "15001";
             // 
             // label2
@@ -93,7 +93,7 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ConnectionStatus});
+            this.SbizClientConnectionStatusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 200);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(447, 22);
@@ -102,8 +102,12 @@
             // 
             // ConnectionStatus
             // 
-            this.ConnectionStatus.Name = "ConnectionStatus";
-            this.ConnectionStatus.Size = new System.Drawing.Size(0, 17);
+            this.SbizClientConnectionStatusLabel.Name = "ConnectionStatus";
+            this.SbizClientConnectionStatusLabel.Text = "Not Connected";
+            this.SbizClientConnectionStatusLabel.ForeColor = System.Drawing.Color.Red;
+            this.SbizClientConnectionStatusLabel.Size = new System.Drawing.Size(0, 17);
+           // this.SbizClientConnectionStatusLabel.Paint += new System.Windows.Forms.PaintEventHandler(this.SbizClientConnectionStatusLabel_Paint);
+
             // 
             // Form1
             // 
@@ -139,7 +143,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel ConnectionStatus;
+        private System.Windows.Forms.ToolStripStatusLabel SbizClientConnectionStatusLabel;
     }
 }
 
