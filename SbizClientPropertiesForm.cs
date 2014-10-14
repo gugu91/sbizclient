@@ -19,17 +19,18 @@ namespace SbizClient
             InitializeComponent();
             SbizClientController.Init();
             SbizClientController.RegisterView(this);
+            this.SbizClientPort.Controls[0].Visible = false;
         }
 
         
         private void button1_Click(object sender, EventArgs e)
         {
             int port_int;
-            string port = Port.Text;
-            string ipAddr = IpAddress.Text;
+            decimal port = SbizClientPort.Value;
+            string ipAddr = SbizClientIpAddress.Text;
             try
             {
-                port_int = Int32.Parse(port);
+                port_int = Convert.ToInt32(port);
             }
             catch (Exception data_format)
             {
@@ -65,6 +66,25 @@ namespace SbizClient
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
                     SbizClientPanel.Visible = true;
                 }
+            }
+        }
+
+        private void SbizClientExit_Click(object sender, EventArgs e)
+        {
+            //chiudere la connessione e poi chiudere il client
+        }
+
+        private void SbizClientToggleFullscreen_Click(object sender, EventArgs e)
+        {
+            if(WindowState == FormWindowState.Normal)
+            {
+                FormBorderStyle = FormBorderStyle.None;
+                WindowState = FormWindowState.Maximized;
+            }
+            else if (WindowState == FormWindowState.Maximized)
+            {
+                FormBorderStyle = FormBorderStyle.Fixed3D;
+                WindowState = FormWindowState.Normal;
             }
         }
 
