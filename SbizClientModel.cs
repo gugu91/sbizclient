@@ -24,18 +24,28 @@ namespace SbizClient
         {
             if (background_thread == null)
             {
-                background_thread = new Thread(() => Task(ipaddress, port));
-                background_thread.Start();
+                if (sbiz_socket.Connect(ipaddress, port) == 1)
+                {
+                    ModelChanged_EventArgs args = new ModelChanged_EventArgs(ModelChanged_EventArgs.CONNECTED);
+                    SbizClientController.OnModelChanged(sbiz_socket, args);
+
+                    background_thread = new Thread(() => Task());
+
+                    background_thread.Start();
+                   
+                }
+                else
+                {
+                    ModelChanged_EventArgs args = new ModelChanged_EventArgs(ModelChanged_EventArgs.ERROR, "There is no server listening on this port");
+                    SbizClientController.OnModelChanged(sbiz_socket, args);
+                }
+                
             }
 
         }
 
-        private static void Task(string ipaddress, int port)
+        private static void Task()
         {
-            sbiz_socket.Connect(ipaddress,port);
-            ModelChanged_EventArgs args = new ModelChanged_EventArgs();
-            SbizClientController.OnModelChanged(sbiz_socket, args);
-
             while (_stop == 0)
             {
                 sbiz_socket.ReceiveData();

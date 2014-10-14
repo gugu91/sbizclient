@@ -77,7 +77,7 @@
             this.SbizClientConnectButton.TabIndex = 4;
             this.SbizClientConnectButton.Text = "Connect";
             this.SbizClientConnectButton.UseVisualStyleBackColor = true;
-            this.SbizClientConnectButton.Click += new System.EventHandler(this.button1_Click);
+            this.SbizClientConnectButton.Click += new System.EventHandler(this.SbizClientConnectButton_Click);
             // 
             // SbizClientPortLabel
             // 
@@ -163,7 +163,7 @@
             // SbizClientExitToolStrip
             // 
             this.SbizClientExitToolStrip.Name = "SbizClientExitToolStrip";
-            this.SbizClientExitToolStrip.Size = new System.Drawing.Size(152, 22);
+            this.SbizClientExitToolStrip.Size = new System.Drawing.Size(92, 22);
             this.SbizClientExitToolStrip.Text = "Exit";
             this.SbizClientExitToolStrip.Click += new System.EventHandler(this.SbizClientExit_Click);
             // 
@@ -193,7 +193,7 @@
             // SbizClientInfoToolStrip
             // 
             this.SbizClientInfoToolStrip.Name = "SbizClientInfoToolStrip";
-            this.SbizClientInfoToolStrip.Size = new System.Drawing.Size(152, 22);
+            this.SbizClientInfoToolStrip.Size = new System.Drawing.Size(147, 22);
             this.SbizClientInfoToolStrip.Text = "SbizClientInfo";
             // 
             // SbizClientPropertiesForm

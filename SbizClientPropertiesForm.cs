@@ -22,19 +22,20 @@ namespace SbizClient
             this.SbizClientPort.Controls[0].Visible = false;
         }
 
-        
-        private void button1_Click(object sender, EventArgs e)
+
+        private void SbizClientConnectButton_Click(object sender, EventArgs e)
         {
             int port_int;
             decimal port = SbizClientPort.Value;
             string ipAddr = SbizClientIpAddress.Text;
+
             try
             {
                 port_int = Convert.ToInt32(port);
             }
             catch (Exception data_format)
             {
-                MessageBox.Show("Invalid Arguments");
+                MessageBox.Show(data_format.Message);
                 return;
             }
 
@@ -52,7 +53,7 @@ namespace SbizClient
         {
             if (sender is SbizClientSocket)
             {
-                if (((SbizClientSocket)sender).Connected)
+                if (args.Status == ModelChanged_EventArgs.CONNECTED)
                 {
                     SbizClientConnectionStatusLabel.Text = "Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Green;
@@ -60,11 +61,18 @@ namespace SbizClient
                     FormBorderStyle = FormBorderStyle.None;
                     WindowState = FormWindowState.Maximized;
                 }
-                else
+                else if(args.Status == ModelChanged_EventArgs.NOT_CONNECTED)
                 {
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
                     SbizClientPanel.Visible = true;
+                }
+                else if(args.Status == ModelChanged_EventArgs.ERROR)
+                {
+                    SbizClientConnectionStatusLabel.Text = "Not Connected";
+                    SbizClientConnectionStatusLabel.ForeColor = Color.Red;
+                    SbizClientPanel.Visible = true;
+                    MessageBox.Show(args.Error_message);
                 }
             }
         }

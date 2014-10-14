@@ -25,20 +25,24 @@ namespace SbizClient
             _connected = false;
         }
 
-        public void Connect(String ipaddress, int port)
+        public int Connect(String ipaddress, int port)
         {
             IPAddress address = IPAddress.Parse(ipaddress);
             IPEndPoint ipe = new IPEndPoint(address, port);
 
             s_conn = new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            s_conn.Connect(ipe);
-           
-            if (!s_conn.Connected)
+            try
+            {
+                s_conn.Connect(ipe);
+            }
+            catch(Exception e)
             {
                 _connected = false;
-                return;
+                return -1;
             }
+           
             _connected = true;
+            return 1;
 
         }
 
@@ -55,7 +59,7 @@ namespace SbizClient
                 s_conn = null;
 
                 _connected = false;
-                ModelChanged_EventArgs args = new ModelChanged_EventArgs();
+                ModelChanged_EventArgs args = new ModelChanged_EventArgs(ModelChanged_EventArgs.NOT_CONNECTED);
                 SbizClientController.OnModelChanged(this, args);
             }
         }
