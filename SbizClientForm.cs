@@ -82,7 +82,7 @@ namespace SbizClient
 
         private void SbizClientExit_Click(object sender, EventArgs e)
         {
-            //chiudere la connessione e poi chiudere il client
+            Application.Exit(); //questo chiama implicitamente formclosing, il quale chiama cleanup
         }
 
         private void SbizClientToggleFullscreen_Click(object sender, EventArgs e)
@@ -105,7 +105,15 @@ namespace SbizClient
 
         }
 
+        private void SbizClientFormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.SbizClientCleanup();
+        }
         
+        private void SbizClientCleanup()
+        {
+            SbizClientController.Stop();
+        }
       
 
       

@@ -72,6 +72,11 @@ namespace SbizClient
             SbizClientModel.Start(ipaddress,port);
         }
 
+        public static void Stop()
+        {
+            SbizClientModel.Stop();
+        }
+
         public static void RegisterView(SbizForm view) //Call this from a view to subscribe the event
         {
             ModelChanged += new ModelChanged_Delegate(view.UpdateViewOnModelChanged);

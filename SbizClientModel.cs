@@ -60,7 +60,11 @@ namespace SbizClient
         public static void Stop()
         {
             Interlocked.Exchange(ref _stop, 1);
-            background_thread.Join();
+            if (background_thread != null)
+            {
+                background_thread.Join();
+            }
+               
         }
     }
 }

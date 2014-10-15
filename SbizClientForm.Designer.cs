@@ -276,6 +276,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SbizClient";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SbizClientFormClosing);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SbizClientForm_KeyPress);
             this.SbizClientPanel.ResumeLayout(false);
             this.SbizClientRunningPanel.ResumeLayout(false);
