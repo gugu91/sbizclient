@@ -16,7 +16,7 @@ namespace SbizClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SbizClientPropertiesForm());
+            Application.Run(new SbizClientForm());
         }
     }
 }

@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace SbizClient
 {
-    public partial class SbizClientPropertiesForm : Form, SbizForm
+    public partial class SbizClientForm : Form, SbizForm
     {
         private delegate void UpdateViewDelegate(object sender, ModelChanged_EventArgs args);
-
-        public SbizClientPropertiesForm()
+        private SbizClientKeyHandler key_handler;
+        public SbizClientForm()
         {
             InitializeComponent();
             SbizClientController.Init();
@@ -98,10 +98,10 @@ namespace SbizClient
             }
         }
 
-        
-        //private void SbizClientConnectionStatusLabel_Paint(object sender, PaintEventArgs e)
-        //{
-        //}
+        private void SbizClientStatusStrip_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            key_handler.KeyPress(SbizClientTextLabel, e);
+        }
       
 
       
