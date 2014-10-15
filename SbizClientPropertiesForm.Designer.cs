@@ -48,12 +48,15 @@
             this.SbizClientConnectPanel = new System.Windows.Forms.Panel();
             this.SbizClientConnectionStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.SbizClientStatusStrip = new System.Windows.Forms.StatusStrip();
+            this.SbizClientRunningPanel = new System.Windows.Forms.Panel();
+            this.SbizClientTextLabel = new System.Windows.Forms.Label();
             this.SbizClientPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SbizClientPort)).BeginInit();
             this.SbizClientMenuStrip.SuspendLayout();
             this.SbizClientTableLayoutPanel.SuspendLayout();
             this.SbizClientConnectPanel.SuspendLayout();
             this.SbizClientStatusStrip.SuspendLayout();
+            this.SbizClientRunningPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // SbizClientIPAddressLabel
@@ -103,6 +106,7 @@
             // 
             // SbizClientPanel
             // 
+            this.SbizClientPanel.Controls.Add(this.SbizClientRunningPanel);
             this.SbizClientPanel.Controls.Add(this.SbizClientConnectPanel);
             this.SbizClientPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SbizClientPanel.Location = new System.Drawing.Point(3, 23);
@@ -235,6 +239,27 @@
             this.SbizClientStatusStrip.TabIndex = 5;
             this.SbizClientStatusStrip.Text = "statusStrip1";
             // 
+            // SbizClientRunningPanel
+            // 
+            this.SbizClientRunningPanel.Controls.Add(this.SbizClientTextLabel);
+            this.SbizClientRunningPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SbizClientRunningPanel.Location = new System.Drawing.Point(0, 0);
+            this.SbizClientRunningPanel.Name = "SbizClientRunningPanel";
+            this.SbizClientRunningPanel.Size = new System.Drawing.Size(441, 176);
+            this.SbizClientRunningPanel.TabIndex = 6;
+            this.SbizClientRunningPanel.Visible = false;
+            // 
+            // SbizClientTextLabel
+            // 
+            this.SbizClientTextLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.SbizClientTextLabel.AutoSize = true;
+            this.SbizClientTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SbizClientTextLabel.Location = new System.Drawing.Point(64, 48);
+            this.SbizClientTextLabel.Name = "SbizClientTextLabel";
+            this.SbizClientTextLabel.Size = new System.Drawing.Size(317, 73);
+            this.SbizClientTextLabel.TabIndex = 0;
+            this.SbizClientTextLabel.Text = "Welcome!";
+            // 
             // SbizClientPropertiesForm
             // 
             this.AcceptButton = this.SbizClientConnectButton;
@@ -259,6 +284,8 @@
             this.SbizClientConnectPanel.PerformLayout();
             this.SbizClientStatusStrip.ResumeLayout(false);
             this.SbizClientStatusStrip.PerformLayout();
+            this.SbizClientRunningPanel.ResumeLayout(false);
+            this.SbizClientRunningPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -283,6 +310,8 @@
         private System.Windows.Forms.Panel SbizClientConnectPanel;
         private System.Windows.Forms.StatusStrip SbizClientStatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel SbizClientConnectionStatusLabel;
+        private System.Windows.Forms.Panel SbizClientRunningPanel;
+        private System.Windows.Forms.Label SbizClientTextLabel;
     }
 }
 

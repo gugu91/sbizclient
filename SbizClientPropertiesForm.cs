@@ -58,6 +58,7 @@ namespace SbizClient
                     SbizClientConnectionStatusLabel.Text = "Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Green;
                     SbizClientConnectPanel.Visible = false;
+                    SbizClientRunningPanel.Visible = true;
                     SbizClientToggleFullscreenToolStrip.Enabled = true;
                     FormBorderStyle = FormBorderStyle.None;
                     WindowState = FormWindowState.Maximized;
