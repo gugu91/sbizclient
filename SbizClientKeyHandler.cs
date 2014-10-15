@@ -9,11 +9,11 @@ namespace SbizClient
 {
     class SbizClientKeyHandler
     {
-        private bool new_word;
+        private int new_word;
 
         public SbizClientKeyHandler()
         {
-            new_word = true;
+            new_word = -1;
         }
 
         public void KeyPress(Label text_label, KeyPressEventArgs e)
@@ -21,15 +21,15 @@ namespace SbizClient
             var c = e.KeyChar;
             if (c == ' ')
             {
-                new_word = true;
+                new_word--;
                 text_label.Text += c.ToString();
             }
             else
             {
-                if (new_word)
+                if (new_word < 0)
                 {
                     text_label.Text = c.ToString();
-                    new_word = false;
+                    new_word = 2;
                 }
                 else
                 {
