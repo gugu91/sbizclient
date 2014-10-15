@@ -81,6 +81,7 @@
             // SbizClientConnectButton
             // 
             this.SbizClientConnectButton.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.SbizClientConnectButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.SbizClientConnectButton.Location = new System.Drawing.Point(184, 119);
             this.SbizClientConnectButton.Name = "SbizClientConnectButton";
             this.SbizClientConnectButton.Size = new System.Drawing.Size(75, 23);
@@ -126,12 +127,11 @@
             // 
             // SbizClientTextLabel
             // 
-            this.SbizClientTextLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.SbizClientTextLabel.AutoSize = true;
+            this.SbizClientTextLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SbizClientTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SbizClientTextLabel.Location = new System.Drawing.Point(64, 48);
+            this.SbizClientTextLabel.Location = new System.Drawing.Point(0, 0);
             this.SbizClientTextLabel.Name = "SbizClientTextLabel";
-            this.SbizClientTextLabel.Size = new System.Drawing.Size(317, 73);
+            this.SbizClientTextLabel.Size = new System.Drawing.Size(441, 176);
             this.SbizClientTextLabel.TabIndex = 0;
             this.SbizClientTextLabel.Text = "Welcome!";
             this.SbizClientTextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -279,7 +279,6 @@
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SbizClientForm_KeyPress);
             this.SbizClientPanel.ResumeLayout(false);
             this.SbizClientRunningPanel.ResumeLayout(false);
-            this.SbizClientRunningPanel.PerformLayout();
             this.SbizClientConnectPanel.ResumeLayout(false);
             this.SbizClientConnectPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SbizClientPort)).EndInit();
