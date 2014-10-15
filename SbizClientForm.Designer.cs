@@ -134,6 +134,7 @@
             this.SbizClientTextLabel.Size = new System.Drawing.Size(317, 73);
             this.SbizClientTextLabel.TabIndex = 0;
             this.SbizClientTextLabel.Text = "Welcome!";
+            this.SbizClientTextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SbizClientConnectPanel
             // 
@@ -252,7 +253,6 @@
             this.SbizClientStatusStrip.Size = new System.Drawing.Size(447, 20);
             this.SbizClientStatusStrip.TabIndex = 5;
             this.SbizClientStatusStrip.Text = "statusStrip1";
-            this.SbizClientStatusStrip.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SbizClientStatusStrip_KeyPress);
             // 
             // SbizClientConnectionStatusLabel
             // 
@@ -270,11 +270,13 @@
             this.Controls.Add(this.SbizClientTableLayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "SbizClientForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SbizClient";
             this.TopMost = true;
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SbizClientForm_KeyPress);
             this.SbizClientPanel.ResumeLayout(false);
             this.SbizClientRunningPanel.ResumeLayout(false);
             this.SbizClientRunningPanel.PerformLayout();

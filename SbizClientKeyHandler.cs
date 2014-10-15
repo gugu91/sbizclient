@@ -29,6 +29,7 @@ namespace SbizClient
                 if (new_word)
                 {
                     text_label.Text = c.ToString();
+                    new_word = false;
                 }
                 else
                 {

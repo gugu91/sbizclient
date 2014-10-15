@@ -17,6 +17,7 @@ namespace SbizClient
         public SbizClientForm()
         {
             InitializeComponent();
+            key_handler = new SbizClientKeyHandler();
             SbizClientController.Init();
             SbizClientController.RegisterView(this);
             this.SbizClientPort.Controls[0].Visible = false;
@@ -98,10 +99,13 @@ namespace SbizClient
             }
         }
 
-        private void SbizClientStatusStrip_KeyPress(object sender, KeyPressEventArgs e)
+        private void SbizClientForm_KeyPress(object sender, KeyPressEventArgs e)
         {
             key_handler.KeyPress(SbizClientTextLabel, e);
+
         }
+
+        
       
 
       
