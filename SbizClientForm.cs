@@ -102,7 +102,7 @@ namespace SbizClient
         private void SbizClientForm_KeyPress(object sender, KeyPressEventArgs e)
         {
             key_handler.KeyPress(SbizClientTextLabel, e);
-
+            SbizClientController.ModelSetData(e.ToString());
         }
 
         private void SbizClientFormClosing(object sender, FormClosingEventArgs e)

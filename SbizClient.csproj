@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlockingQueue.cs" />
+    <Compile Include="ModelChanged_EventArgs.cs" />
     <Compile Include="SbizClientController.cs" />
     <Compile Include="SbizClientKeyHandler.cs" />
     <Compile Include="SbizClientModel.cs" />
