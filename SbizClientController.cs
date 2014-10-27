@@ -52,6 +52,7 @@ namespace SbizClient
 
         public static void ModelSetData(string data)
         {
+            SbizClientModel.message_queue.Add(data);
         }
     }
 }

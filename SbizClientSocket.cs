@@ -46,7 +46,7 @@ namespace SbizClient
 
         }
 
-        public void ReceiveData()
+        public void SendData(byte[] data)
         {
 
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace SbizClient
 {
@@ -12,6 +13,11 @@ namespace SbizClient
         public static SbizClientSocket sbiz_socket;
         public static Thread background_thread;
         private static Int32 _stop;
+        public static BlockingCollection<string> message_queue; /*Coda bloccante thread safe.
+                                                           * Add = put nella coda, 
+                                                           * take = get dalla coda, 
+                                                           * completeadding = 
+                                                           *     chiude la coda(http://msdn.microsoft.com/en-us/library/dd287086.aspx)*/
 
         public static void Init()
         {
@@ -48,7 +54,7 @@ namespace SbizClient
         {
             while (_stop == 0)
             {
-                sbiz_socket.ReceiveData();
+                sbiz_socket.SendData(Encoding.ASCII.GetBytes(message_queue.Take()));
             }
 
             sbiz_socket.ShutdownConnection();
