@@ -48,7 +48,15 @@ namespace SbizClient
 
         public void SendData(byte[] data)
         {
-
+            try
+            {
+                s_conn.Send(data,data.Length,SocketFlags.None);
+            }
+            catch(Exception e)
+            {
+                //TODO capire quale eccezione è stata sollevata
+                return;
+            }
         }
 
         public void ShutdownConnection()

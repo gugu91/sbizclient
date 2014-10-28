@@ -24,6 +24,7 @@ namespace SbizClient
             sbiz_socket = new SbizClientSocket();
             background_thread = null;
             Interlocked.Exchange(ref _stop, 0);
+            message_queue = new BlockingCollection<string>();
         }
 
         public static void Start(string ipaddress, int port)
@@ -54,7 +55,11 @@ namespace SbizClient
         {
             while (_stop == 0)
             {
-                sbiz_socket.SendData(Encoding.ASCII.GetBytes(message_queue.Take()));
+                string tmp;
+                if(message_queue.TryTake(out tmp,200))
+                {
+                    sbiz_socket.SendData(Encoding.ASCII.GetBytes(tmp));
+                }
             }
 
             sbiz_socket.ShutdownConnection();
