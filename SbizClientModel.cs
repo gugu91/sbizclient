@@ -13,7 +13,7 @@ namespace SbizClient
         public static SbizClientSocket sbiz_socket;
         public static Thread background_thread;
         private static Int32 _stop;
-        public static BlockingCollection<string> message_queue; /*Coda bloccante thread safe.
+        public static BlockingCollection<byte[]> message_queue; /*Coda bloccante thread safe.
                                                            * Add = put nella coda, 
                                                            * take = get dalla coda, 
                                                            * completeadding = 
@@ -24,7 +24,7 @@ namespace SbizClient
             sbiz_socket = new SbizClientSocket();
             background_thread = null;
             Interlocked.Exchange(ref _stop, 0);
-            message_queue = new BlockingCollection<string>();
+            message_queue = new BlockingCollection<byte[]>();
         }
 
         public static void Start(string ipaddress, int port)
@@ -55,10 +55,10 @@ namespace SbizClient
         {
             while (_stop == 0)
             {
-                string tmp;
-                if(message_queue.TryTake(out tmp,200))
+                byte[] tmp_m;
+                if(message_queue.TryTake(out tmp_m,200))
                 {
-                    sbiz_socket.SendData(Encoding.ASCII.GetBytes(tmp));
+                    sbiz_socket.SendData(tmp_m);
                 }
             }
 

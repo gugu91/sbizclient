@@ -50,7 +50,7 @@ namespace SbizClient
             ModelChanged -= new ModelChanged_Delegate(view.UpdateViewOnModelChanged);
         }
 
-        public static void ModelSetData(string data)
+        public static void ModelSetData(byte[] data)
         {
             SbizClientModel.message_queue.Add(data);
         }

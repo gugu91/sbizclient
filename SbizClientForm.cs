@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using SbizLibrary;
 
 namespace SbizClient
 {
@@ -62,7 +63,7 @@ namespace SbizClient
                     SbizClientRunningPanel.Visible = true;
                     SbizClientToggleFullscreenToolStrip.Enabled = true;
                     FormBorderStyle = FormBorderStyle.None;
-                    WindowState = FormWindowState.Maximized;
+                    //WindowState = FormWindowState.Maximized;
                 }
                 else if(args.Status == ModelChanged_EventArgs.NOT_CONNECTED)
                 {
@@ -102,7 +103,8 @@ namespace SbizClient
         private void SbizClientForm_KeyPress(object sender, KeyPressEventArgs e)
         {
             key_handler.KeyPress(SbizClientTextLabel, e);
-            SbizClientController.ModelSetData(e.KeyChar.ToString());
+            SbizMessage m = new SbizMessage(SbizMessageConst.KEY_PRESS,  Encoding.UTF8.GetBytes(e.KeyChar.ToString()));
+            SbizClientController.ModelSetData(m.ToByteArray());
         }
 
         private void SbizClientFormClosing(object sender, FormClosingEventArgs e)
