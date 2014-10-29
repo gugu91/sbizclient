@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewControllerElements\ModelChanged_EventArgs.cs" />
     <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientConnectUC.cs">
       <SubType>UserControl</SubType>
     </Compile>

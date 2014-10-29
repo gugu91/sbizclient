@@ -28,11 +28,11 @@ namespace Sbiz.Client
             SbizClientController.ModelSetData(m.ToByteArray());
         }
 
-        public void UpdateViewOnModelChanged(object sender, ModelChanged_EventArgs args)
+        public void UpdateViewOnModelChanged(object sender, SbizModelChanged_EventArgs args)
         {
             BeginInvoke(new UpdateViewDelegate(UpdateView), new object[] { sender, args });
         }
-        public void UpdateView(object sender, ModelChanged_EventArgs args)
+        public void UpdateView(object sender, SbizModelChanged_EventArgs args)
         {
         }
     }

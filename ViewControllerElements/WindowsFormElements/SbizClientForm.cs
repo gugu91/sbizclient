@@ -21,16 +21,16 @@ namespace Sbiz.Client
             
         }
 
-        public void UpdateViewOnModelChanged(object sender, ModelChanged_EventArgs args)
+        public void UpdateViewOnModelChanged(object sender, SbizModelChanged_EventArgs args)
         {
             BeginInvoke(new UpdateViewDelegate(UpdateView), new object[] {sender,args});
         }
 
-        public void UpdateView(object sender, ModelChanged_EventArgs args)
+        public void UpdateView(object sender, SbizModelChanged_EventArgs args)
         {
             if (sender is SbizClientSocket)
             {
-                if (args.Status == ModelChanged_EventArgs.CONNECTED)
+                if (args.Status == SbizModelChanged_EventArgs.CONNECTED)
                 {
                     SbizClientConnectView.Visible = false;
                     SbizClientConnectView.Enabled = false;
@@ -43,7 +43,7 @@ namespace Sbiz.Client
                     FormBorderStyle = FormBorderStyle.None;
                     //WindowState = FormWindowState.Maximized;
                 }
-                else if(args.Status == ModelChanged_EventArgs.NOT_CONNECTED)
+                else if(args.Status == SbizModelChanged_EventArgs.NOT_CONNECTED)
                 {
                     SbizClientRunningView.Visible = false;
                     SbizClientRunningView.Enabled = false;
@@ -53,7 +53,7 @@ namespace Sbiz.Client
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
                 }
-                else if(args.Status == ModelChanged_EventArgs.ERROR)
+                else if(args.Status == SbizModelChanged_EventArgs.ERROR)
                 {
                     SbizClientRunningView.Visible = false;
                     SbizClientRunningView.Enabled = false;
