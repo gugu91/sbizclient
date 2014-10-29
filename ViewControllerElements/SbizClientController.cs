@@ -4,17 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SbizClient
+namespace Sbiz.Client
 {
-    public interface SbizForm //Extend the interface of Form to support the event for any IView object
+    #region Delegates
+    public delegate void ModelChanged_Delegate(object sender, ModelChanged_EventArgs args);
+    public delegate void UpdateViewDelegate(object sender, ModelChanged_EventArgs args);
+    #endregion
+
+    public interface SbizControl //Extend the interface of Form to support the event for any IView object
     {
         void UpdateViewOnModelChanged(object sender, ModelChanged_EventArgs args);
     }
 
     static class SbizClientController
     {
-        #region ModelChangedRegion
-        public delegate void ModelChanged_Delegate(object sender, ModelChanged_EventArgs args);
+        #region ModelChangedEventRegion
         public static event ModelChanged_Delegate ModelChanged;
         public static void OnModelChanged(object sender, ModelChanged_EventArgs args)
         {
@@ -40,12 +44,11 @@ namespace SbizClient
             SbizClientModel.Stop();
         }
 
-        public static void RegisterView(SbizForm view) //Call this from a view to subscribe the event
+        public static void RegisterView(SbizControl view) //Call this from a view to subscribe the event
         {
             ModelChanged += new ModelChanged_Delegate(view.UpdateViewOnModelChanged);
         }
-
-        public static void UnregisterView(SbizForm view) //Call this from a view to unsubscribe events
+        public static void UnregisterView(SbizControl view) //Call this from a view to unsubscribe events
         {
             ModelChanged -= new ModelChanged_Delegate(view.UpdateViewOnModelChanged);
         }

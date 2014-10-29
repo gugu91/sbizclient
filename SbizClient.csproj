@@ -44,20 +44,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelChanged_EventArgs.cs" />
-    <Compile Include="SbizClientController.cs" />
-    <Compile Include="SbizClientKeyHandler.cs" />
-    <Compile Include="SbizClientModel.cs" />
-    <Compile Include="SbizClientForm.cs">
+    <Compile Include="ViewControllerElements\ModelChanged_EventArgs.cs" />
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientConnectUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientConnectUC.Designer.cs">
+      <DependentUpon>SbizClientConnectUC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewControllerElements\SbizClientController.cs" />
+    <Compile Include="ViewControllerElements\SbizClientKeyHandler.cs" />
+    <Compile Include="ModelElements\SbizClientModel.cs" />
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SbizClientForm.Designer.cs">
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientForm.Designer.cs">
       <DependentUpon>SbizClientForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SbizClientSocket.cs" />
-    <EmbeddedResource Include="SbizClientForm.resx">
+    <Compile Include="ModelElements\SbizClientSocket.cs" />
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientRunningUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientRunningUC.Designer.cs">
+      <DependentUpon>SbizClientRunningUC.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="ViewControllerElements\WindowsFormElements\SbizClientConnectUC.resx">
+      <DependentUpon>SbizClientConnectUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewControllerElements\WindowsFormElements\SbizClientForm.resx">
       <DependentUpon>SbizClientForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -70,6 +85,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ViewControllerElements\WindowsFormElements\SbizClientRunningUC.resx">
+      <DependentUpon>SbizClientRunningUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

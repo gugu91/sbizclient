@@ -7,43 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using SbizLibrary;
+using Sbiz.Library;
 
-namespace SbizClient
+namespace Sbiz.Client
 {
-    public partial class SbizClientForm : Form, SbizForm
+    public partial class SbizClientForm : Form, SbizControl
     {
-        private delegate void UpdateViewDelegate(object sender, ModelChanged_EventArgs args);
-        private SbizClientKeyHandler key_handler;
         public SbizClientForm()
         {
             InitializeComponent();
-            key_handler = new SbizClientKeyHandler();
             SbizClientController.Init();
             SbizClientController.RegisterView(this);
-            this.SbizClientPort.Controls[0].Visible = false;
-        }
-
-
-        private void SbizClientConnectButton_Click(object sender, EventArgs e)
-        {
-            int port_int;
-            decimal port = SbizClientPort.Value;
-            string ipAddr = SbizClientIpAddress.Text;
-
-            try
-            {
-                port_int = Convert.ToInt32(port);
-            }
-            catch (Exception data_format)
-            {
-                MessageBox.Show(data_format.Message);
-                return;
-            }
-
-            SbizClientController.Start(ipAddr, port_int);
-
-
+            
         }
 
         public void UpdateViewOnModelChanged(object sender, ModelChanged_EventArgs args)
@@ -57,25 +32,36 @@ namespace SbizClient
             {
                 if (args.Status == ModelChanged_EventArgs.CONNECTED)
                 {
+                    SbizClientConnectView.Visible = false;
+                    SbizClientConnectView.Enabled = false;
+                    SbizClientRunningView.Enabled = true;
+                    SbizClientRunningView.Visible = true;
+                    SbizClientRunningView.Focus();//otherwise won't get the input
                     SbizClientConnectionStatusLabel.Text = "Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Green;
-                    SbizClientConnectPanel.Visible = false;
-                    SbizClientRunningPanel.Visible = true;
                     SbizClientToggleFullscreenToolStrip.Enabled = true;
                     FormBorderStyle = FormBorderStyle.None;
                     //WindowState = FormWindowState.Maximized;
                 }
                 else if(args.Status == ModelChanged_EventArgs.NOT_CONNECTED)
                 {
+                    SbizClientRunningView.Visible = false;
+                    SbizClientRunningView.Enabled = false;
+                    SbizClientConnectView.Enabled = true;
+                    SbizClientConnectView.Visible = true;
+                    SbizClientConnectView.Focus();
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
-                    SbizClientPanel.Visible = true;
                 }
                 else if(args.Status == ModelChanged_EventArgs.ERROR)
                 {
+                    SbizClientRunningView.Visible = false;
+                    SbizClientRunningView.Enabled = false;
+                    SbizClientConnectView.Enabled = true;
+                    SbizClientConnectView.Visible = true;
+                    SbizClientConnectView.Focus();
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
-                    SbizClientPanel.Visible = true;
                     MessageBox.Show(args.Error_message);
                 }
             }
@@ -98,13 +84,6 @@ namespace SbizClient
                 FormBorderStyle = FormBorderStyle.Fixed3D;
                 WindowState = FormWindowState.Normal;
             }
-        }
-
-        private void SbizClientForm_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            key_handler.KeyPress(SbizClientTextLabel, e);
-            SbizMessage m = new SbizMessage(SbizMessageConst.KEY_PRESS,  Encoding.UTF8.GetBytes(e.KeyChar.ToString()));
-            SbizClientController.ModelSetData(m.ToByteArray());
         }
 
         private void SbizClientFormClosing(object sender, FormClosingEventArgs e)

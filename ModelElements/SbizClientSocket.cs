@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace SbizClient
+namespace Sbiz.Client
 {
     class SbizClientSocket
     {
