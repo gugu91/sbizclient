@@ -50,7 +50,6 @@
             this.MainPanel.Name = "MainPanel";
             this.MainPanel.Size = new System.Drawing.Size(451, 201);
             this.MainPanel.TabIndex = 6;
-            this.MainPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.SbizClientConnectPanel_Paint);
             // 
             // SbizClientIPAddressLabel
             // 

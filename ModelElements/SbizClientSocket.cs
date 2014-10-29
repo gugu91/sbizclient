@@ -25,10 +25,9 @@ namespace Sbiz.Client
             _connected = false;
         }
 
-        public int Connect(String ipaddress, int port)
+        public int Connect(IPAddress ipaddress, int port)
         {
-            IPAddress address = IPAddress.Parse(ipaddress);
-            IPEndPoint ipe = new IPEndPoint(address, port);
+            IPEndPoint ipe = new IPEndPoint(ipaddress, port);
 
             s_conn = new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             try

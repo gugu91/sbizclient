@@ -34,7 +34,7 @@ namespace Sbiz.Client
             SbizClientModel.Init();
         }
 
-        public static void Start(string ipaddress, int port)
+        public static void Start(System.Net.IPAddress ipaddress, int port)
         {
             SbizClientModel.Start(ipaddress,port);
         }

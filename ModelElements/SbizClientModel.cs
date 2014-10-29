@@ -27,7 +27,7 @@ namespace Sbiz.Client
             message_queue = new BlockingCollection<byte[]>();
         }
 
-        public static void Start(string ipaddress, int port)
+        public static void Start(System.Net.IPAddress ipaddress, int port)
         {
             if (background_thread == null)
             {

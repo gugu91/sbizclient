@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Sbiz.Library;
 
 namespace Sbiz.Client
 {
@@ -17,17 +18,23 @@ namespace Sbiz.Client
             InitializeComponent();
             SbizClientController.RegisterView(this);
             this.SbizClientPort.Controls[0].Visible = false;
+            this.SbizClientPort.Value = SbizConf.SbizSocketPort;
+            this.SbizClientIpAddress.Text = SbizConf.SbizSocketAddress.ToString();
         }
 
         private void SbizClientConnectButton_Click(object sender, EventArgs e)
         {
-            int port_int;
-            decimal port = SbizClientPort.Value;
-            string ipAddr = SbizClientIpAddress.Text;
+            int port;
+            decimal port_ascii = SbizClientPort.Value;
+            string ipaddr_ascii = SbizClientIpAddress.Text;
+            System.Net.IPAddress ipaddr;
 
             try
             {
-                port_int = Convert.ToInt32(port);
+                port = Convert.ToInt32(port_ascii);
+                if (SbizConf.SbizSocketPort != port) SbizConf.SbizSocketPort = port;
+                ipaddr = System.Net.IPAddress.Parse(ipaddr_ascii);
+                if (SbizConf.SbizSocketAddress != ipaddr) SbizConf.SbizSocketAddress = ipaddr;
             }
             catch (Exception data_format)
             {
@@ -35,11 +42,7 @@ namespace Sbiz.Client
                 return;
             }
 
-            SbizClientController.Start(ipAddr, port_int);
-        }
-        private void SbizClientConnectPanel_Paint(object sender, PaintEventArgs e)
-        {
-
+            SbizClientController.Start(ipaddr, port);
         }
                 public void UpdateViewOnModelChanged(object sender, ModelChanged_EventArgs args)
         {
