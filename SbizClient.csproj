@@ -103,7 +103,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Documents\Visual Studio 2013\Projects\SbizLibrary\SbizLibrary\SbizLibrary.csproj">
+    <ProjectReference Include="..\SbizLibrary\SbizLibrary\SbizLibrary.csproj">
       <Project>{286e257d-c97f-42bb-bf31-d6e5e5acf7c7}</Project>
       <Name>SbizLibrary</Name>
     </ProjectReference>
