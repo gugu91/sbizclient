@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using Sbiz.Library;
 
 namespace Sbiz.Client
 {
@@ -27,13 +28,13 @@ namespace Sbiz.Client
             message_queue = new BlockingCollection<byte[]>();
         }
 
-        public static void Start(string ipaddress, int port)
+        public static void Start(System.Net.IPAddress ipaddress, int port)
         {
             if (background_thread == null)
             {
                 if (sbiz_socket.Connect(ipaddress, port) == 1)
                 {
-                    ModelChanged_EventArgs args = new ModelChanged_EventArgs(ModelChanged_EventArgs.CONNECTED);
+                    SbizModelChanged_EventArgs args = new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED);
                     SbizClientController.OnModelChanged(sbiz_socket, args);
 
                     background_thread = new Thread(() => Task());
@@ -43,7 +44,7 @@ namespace Sbiz.Client
                 }
                 else
                 {
-                    ModelChanged_EventArgs args = new ModelChanged_EventArgs(ModelChanged_EventArgs.ERROR, "There is no server listening on this port");
+                    SbizModelChanged_EventArgs args = new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "There is no server listening on this port");
                     SbizClientController.OnModelChanged(sbiz_socket, args);
                 }
                 
@@ -56,9 +57,13 @@ namespace Sbiz.Client
             while (_stop == 0)
             {
                 byte[] tmp_m;
-                if(message_queue.TryTake(out tmp_m,200))
+                if(message_queue.TryTake(out tmp_m, 200))
                 {
                     sbiz_socket.SendData(tmp_m);
+                }
+                else
+                {
+                    sbiz_socket.SendData(SbizMessage.KeepAliveMessage());
                 }
             }
 

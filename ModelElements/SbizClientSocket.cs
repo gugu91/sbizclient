@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using Sbiz.Library;
 
 namespace Sbiz.Client
 {
@@ -25,10 +26,9 @@ namespace Sbiz.Client
             _connected = false;
         }
 
-        public int Connect(String ipaddress, int port)
+        public int Connect(IPAddress ipaddress, int port)
         {
-            IPAddress address = IPAddress.Parse(ipaddress);
-            IPEndPoint ipe = new IPEndPoint(address, port);
+            IPEndPoint ipe = new IPEndPoint(ipaddress, port);
 
             s_conn = new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             try
@@ -67,7 +67,7 @@ namespace Sbiz.Client
                 s_conn = null;
 
                 _connected = false;
-                ModelChanged_EventArgs args = new ModelChanged_EventArgs(ModelChanged_EventArgs.NOT_CONNECTED);
+                SbizModelChanged_EventArgs args = new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.NOT_CONNECTED);
                 SbizClientController.OnModelChanged(this, args);
             }
         }
