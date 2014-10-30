@@ -46,7 +46,7 @@ namespace Sbiz.Client
         }
                 public void UpdateViewOnModelChanged(object sender, SbizModelChanged_EventArgs args)
         {
-            BeginInvoke(new UpdateViewDelegate(UpdateView), new object[] {sender,args});
+            BeginInvoke(new SbizUpdateView_Delegate(UpdateView), new object[] {sender,args});
         }
         public void UpdateView(object sender, SbizModelChanged_EventArgs args)
         {

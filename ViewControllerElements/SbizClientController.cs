@@ -15,7 +15,7 @@ namespace Sbiz.Client
     static class SbizClientController
     {
         #region ModelChangedEventRegion
-        public static event ModelChanged_Delegate ModelChanged;
+        public static event SbizModelChanged_Delegate ModelChanged;
         public static void OnModelChanged(object sender, SbizModelChanged_EventArgs args)
         {
             if (ModelChanged != null)
@@ -42,11 +42,11 @@ namespace Sbiz.Client
 
         public static void RegisterView(SbizControl view) //Call this from a view to subscribe the event
         {
-            ModelChanged += new ModelChanged_Delegate(view.UpdateViewOnModelChanged);
+            ModelChanged += new SbizModelChanged_Delegate(view.UpdateViewOnModelChanged);
         }
         public static void UnregisterView(SbizControl view) //Call this from a view to unsubscribe events
         {
-            ModelChanged -= new ModelChanged_Delegate(view.UpdateViewOnModelChanged);
+            ModelChanged -= new SbizModelChanged_Delegate(view.UpdateViewOnModelChanged);
         }
 
         public static void ModelSetData(byte[] data)
