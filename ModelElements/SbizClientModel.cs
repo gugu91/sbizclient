@@ -45,7 +45,7 @@ namespace Sbiz.Client
             sbiz_socket = new SbizClientSender();
             background_thread = null;
             _model_sync_event = new AutoResetEvent(false);
-            _tcp_buffer_queue = new BlockingCollection<byte[]>();
+            _tcp_buffer_queue = new SbizQueue<byte[]>();
         }
 
         public static void Start(System.Net.IPAddress ipaddress, int port)
@@ -55,43 +55,37 @@ namespace Sbiz.Client
                 background_thread = new Thread(() => Task(ipaddress, port));
 
                 background_thread.Start();
-                
             }
-
         }
 
         private static void Task(System.Net.IPAddress ipaddress, int port)
         {
             if (sbiz_socket.Connect(ipaddress, port) == -1)
             {
-                SbizClientController.OnModelChanged(sbiz_socket, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "There is no server listening on this port"););
+                SbizClientController.OnModelChanged(sbiz_socket, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "There is no server listening on this port"));
                 return;
             }
             
             SbizClientController.OnModelChanged(sbiz_socket, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED));
-      
+
+            byte[] tmp_m;
             while (SbizClientController.Running)
             {
-                byte[] tmp_m;
-                if(_tcp_buffer_queue.TryTake(out tmp_m, 200))
-                {
-                    sbiz_socket.SendData(tmp_m);
-                }
-                else
-                {
-                    sbiz_socket.SendData(SbizMessage.KeepAliveMessage());
-                }
+                ModelSyncEvent.WaitOne();
+                tmp_m = null;
+                if(TCPBufferQueue.Dequeue(ref tmp_m)) sbiz_socket.SendData(tmp_m);
             }
-
+            
+            tmp_m = null;
+            while(TCPBufferQueue.Dequeue(ref tmp_m)) sbiz_socket.SendData(tmp_m);
             sbiz_socket.ShutdownConnection();
-            Interlocked.Exchange(ref _stop, 0);
         }
 
         
 
         public static void Stop()
         {
-            Interlocked.Exchange(ref _stop, 1);
+            ModelSyncEvent.Set();
             if (background_thread != null)
             {
                 background_thread.Join();

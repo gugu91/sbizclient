@@ -79,7 +79,8 @@ namespace Sbiz.Client
 
         public static void ModelSetData(byte[] data)
         {
-            SbizClientModel._tcp_buffer_queue.Add(data);
+            SbizClientModel.TCPBufferQueue.Enqueue(data);
+            SbizClientModel.ModelSyncEvent.Set();
         }
     }
 }

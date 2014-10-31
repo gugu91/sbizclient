@@ -48,14 +48,16 @@ namespace Sbiz.Client
 
         public void SendData(byte[] data)
         {
-            try
+            s_conn.BeginSend(data, 0, data.Length,SocketFlags.None, SendCallback, s_conn);
+        }
+
+        private void SendCallback(IAsyncResult ar)
+        {
+            Socket handler = (Socket)ar.AsyncState;
+
+            if (handler.EndSend(ar) < 0)
             {
-                s_conn.Send(data,data.Length,SocketFlags.None);
-            }
-            catch(Exception e)
-            {
-                //TODO capire quale eccezione è stata sollevata
-                return;
+                SbizClientModel.ModelSyncEvent.Set();
             }
         }
 
@@ -67,8 +69,7 @@ namespace Sbiz.Client
                 s_conn = null;
 
                 _connected = false;
-                SbizModelChanged_EventArgs args = new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.NOT_CONNECTED);
-                SbizClientController.OnModelChanged(this, args);
+                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.NOT_CONNECTED));
             }
         }
     }
