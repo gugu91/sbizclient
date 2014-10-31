@@ -28,7 +28,7 @@ namespace Sbiz.Client
 
         public void UpdateView(object sender, SbizModelChanged_EventArgs args)
         {
-            if (sender is SbizClientSocket)
+            if (sender is SbizClientSender)
             {
                 if (args.Status == SbizModelChanged_EventArgs.CONNECTED)
                 {

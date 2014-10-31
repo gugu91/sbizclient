@@ -14,6 +14,31 @@ namespace Sbiz.Client
 
     static class SbizClientController
     {
+        #region RunningRegion
+        private static int _running; //NB never refer to this object as it is not thread safe
+        private const int YES = 1;
+        private const int NO = 0;
+        public static bool Running
+        {
+            get
+            {
+                if (_running == YES) return true;
+                else return false;
+            }
+            set
+            {
+                if (value)
+                {
+                    System.Threading.Interlocked.Exchange(ref _running, YES);
+                }
+                else
+                {
+                    System.Threading.Interlocked.Exchange(ref _running, NO);
+                }
+            }
+        }
+        #endregion
+
         #region ModelChangedEventRegion
         public static event SbizModelChanged_Delegate ModelChanged;
         public static void OnModelChanged(object sender, SbizModelChanged_EventArgs args)
@@ -27,16 +52,19 @@ namespace Sbiz.Client
 
         public static void Init()
         {
+            Running = true;
             SbizClientModel.Init();
         }
 
         public static void Start(System.Net.IPAddress ipaddress, int port)
         {
+            Running = true;
             SbizClientModel.Start(ipaddress,port);
         }
 
         public static void Stop()
         {
+            Running = false;
             SbizClientModel.Stop();
         }
 
@@ -51,7 +79,7 @@ namespace Sbiz.Client
 
         public static void ModelSetData(byte[] data)
         {
-            SbizClientModel.message_queue.Add(data);
+            SbizClientModel._tcp_buffer_queue.Add(data);
         }
     }
 }

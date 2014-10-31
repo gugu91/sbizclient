@@ -8,7 +8,7 @@ using Sbiz.Library;
 
 namespace Sbiz.Client
 {
-    class SbizClientSocket
+    class SbizClientSender
     {
         private Socket s_conn;
         private static bool _connected;
@@ -21,7 +21,7 @@ namespace Sbiz.Client
             }
         }
 
-        public SbizClientSocket()
+        public SbizClientSender()
         {
             _connected = false;
         }

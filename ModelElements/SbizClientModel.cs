@@ -11,53 +11,69 @@ namespace Sbiz.Client
 {
     static class SbizClientModel
     {
-        public static SbizClientSocket sbiz_socket;
+        #region Attributes
+        public static SbizClientSender sbiz_socket;
         public static Thread background_thread;
-        private static Int32 _stop;
-        public static BlockingCollection<byte[]> message_queue; /*Coda bloccante thread safe.
+        private static AutoResetEvent _model_sync_event;
+        private static SbizQueue<byte[]> _tcp_buffer_queue; /*Coda bloccante thread safe.
                                                            * Add = put nella coda, 
                                                            * take = get dalla coda, 
                                                            * completeadding = 
                                                            *     chiude la coda(http://msdn.microsoft.com/en-us/library/dd287086.aspx)*/
+        #endregion 
 
+        #region Properties
+        public static AutoResetEvent ModelSyncEvent
+        {
+            get
+            {
+                return _model_sync_event;
+            }
+        }
+        public static SbizQueue<byte[]> TCPBufferQueue
+        {
+            get
+            {
+                return _tcp_buffer_queue;
+            }
+        }
+        #endregion
+
+        #region StaticMethods
         public static void Init()
         {
-            sbiz_socket = new SbizClientSocket();
+            sbiz_socket = new SbizClientSender();
             background_thread = null;
-            Interlocked.Exchange(ref _stop, 0);
-            message_queue = new BlockingCollection<byte[]>();
+            _model_sync_event = new AutoResetEvent(false);
+            _tcp_buffer_queue = new BlockingCollection<byte[]>();
         }
 
         public static void Start(System.Net.IPAddress ipaddress, int port)
         {
             if (background_thread == null)
             {
-                if (sbiz_socket.Connect(ipaddress, port) == 1)
-                {
-                    SbizModelChanged_EventArgs args = new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED);
-                    SbizClientController.OnModelChanged(sbiz_socket, args);
+                background_thread = new Thread(() => Task(ipaddress, port));
 
-                    background_thread = new Thread(() => Task());
-
-                    background_thread.Start();
-                   
-                }
-                else
-                {
-                    SbizModelChanged_EventArgs args = new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "There is no server listening on this port");
-                    SbizClientController.OnModelChanged(sbiz_socket, args);
-                }
+                background_thread.Start();
                 
             }
 
         }
 
-        private static void Task()
+        private static void Task(System.Net.IPAddress ipaddress, int port)
         {
-            while (_stop == 0)
+            if (sbiz_socket.Connect(ipaddress, port) == -1)
+            {
+                SbizClientController.OnModelChanged(sbiz_socket, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "There is no server listening on this port"););
+                return;
+            }
+            
+            SbizClientController.OnModelChanged(sbiz_socket, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED));
+      
+            while (SbizClientController.Running)
             {
                 byte[] tmp_m;
-                if(message_queue.TryTake(out tmp_m, 200))
+                if(_tcp_buffer_queue.TryTake(out tmp_m, 200))
                 {
                     sbiz_socket.SendData(tmp_m);
                 }
@@ -83,4 +99,5 @@ namespace Sbiz.Client
                
         }
     }
+        #endregion
 }
