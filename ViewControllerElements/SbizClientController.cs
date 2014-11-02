@@ -50,15 +50,10 @@ namespace Sbiz.Client
         }
         #endregion
 
-        public static void Init()
-        {
-            Running = true;
-            SbizClientModel.Init();
-        }
-
         public static void Start(System.Net.IPAddress ipaddress, int port)
         {
             Running = true;
+            SbizClientModel.Init();
             SbizClientModel.Start(ipaddress,port);
         }
 

@@ -46,6 +46,7 @@ namespace Sbiz.Client
             IPEndPoint ipe = new IPEndPoint(ipaddress, port);
 
             s_conn = new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.TRYING));
             try
             {
                 s_conn.Connect(ipe);

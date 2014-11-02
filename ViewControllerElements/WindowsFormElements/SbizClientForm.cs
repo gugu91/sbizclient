@@ -16,9 +16,7 @@ namespace Sbiz.Client
         public SbizClientForm()
         {
             InitializeComponent();
-            SbizClientController.Init();
             SbizClientController.RegisterView(this);
-            
         }
 
         public void UpdateViewOnModelChanged(object sender, SbizModelChanged_EventArgs args)
@@ -52,6 +50,16 @@ namespace Sbiz.Client
                     SbizClientConnectView.Focus();
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
+                }
+                else if (args.Status == SbizModelChanged_EventArgs.TRYING)
+                {
+                    SbizClientRunningView.Visible = false;
+                    SbizClientRunningView.Enabled = false;
+                    SbizClientConnectView.Enabled = true;
+                    SbizClientConnectView.Visible = true;
+                    SbizClientConnectView.Focus();
+                    SbizClientConnectionStatusLabel.Text = "Connecting...";
+                    SbizClientConnectionStatusLabel.ForeColor = Color.Orange;
                 }
                 else if(args.Status == SbizModelChanged_EventArgs.ERROR)
                 {

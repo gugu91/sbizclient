@@ -17,7 +17,7 @@ namespace Sbiz.Client
         public SbizClientRunningUC()
         {
             InitializeComponent();
-            SbizClientController.RegisterView(this);
+            //SbizClientController.RegisterView(this);
             key_handler = new SbizClientKeyHandler();
         }
 
