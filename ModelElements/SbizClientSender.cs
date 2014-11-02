@@ -69,7 +69,14 @@ namespace Sbiz.Client
         {
             try
             {
-                s_conn.BeginSend(data, 0, data.Length, SocketFlags.None, SendCallback, s_conn);
+                /* NB there was previously a protocol error as size of the data buffer was not sent, causing
+                 * some data to not be processed by server.
+                 */
+                byte[] datasize = BitConverter.GetBytes(data.Length);//size of the message is sent
+                byte[] buffer = new byte[datasize.Length+data.Length];
+                datasize.CopyTo(buffer, 0);
+                data.CopyTo(buffer, datasize.Length);
+                s_conn.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, SendCallback, s_conn);
             }
             catch (SocketException se)
             {
