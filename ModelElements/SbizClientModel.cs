@@ -60,16 +60,9 @@ namespace Sbiz.Client
 
         private static void Task(System.Net.IPAddress ipaddress, int port)
         {
-            if (sbiz_socket.Connect(ipaddress, port) == -1)
-            {
-                SbizClientController.OnModelChanged(sbiz_socket, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "There is no server listening on this port"));
-                return;
-            }
-            
-            SbizClientController.OnModelChanged(sbiz_socket, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED));
-
+            if (sbiz_socket.Connect(ipaddress, port) == -1) return;
             byte[] tmp_m;
-            while (SbizClientController.Running)
+            while (SbizClientController.Running && SbizClientSender.Connected)
             {
                 ModelSyncEvent.WaitOne();
                 tmp_m = null;

@@ -11,19 +11,34 @@ namespace Sbiz.Client
     class SbizClientSender
     {
         private Socket s_conn;
-        private static bool _connected;
-
-        public bool Connected
+        #region RunningRegion
+        private static int _connected; //NB never refer to this object as it is not thread safe
+        private const int YES = 1;
+        private const int NO = 0;
+        public static bool Connected
         {
             get
             {
-                return _connected;
+                if (_connected == YES) return true;
+                else return false;
+            }
+            set
+            {
+                if (value)
+                {
+                    System.Threading.Interlocked.Exchange(ref _connected, YES);
+                }
+                else
+                {
+                    System.Threading.Interlocked.Exchange(ref _connected, NO);
+                }
             }
         }
+        #endregion
 
         public SbizClientSender()
         {
-            _connected = false;
+            Connected = false;
         }
 
         public int Connect(IPAddress ipaddress, int port)
@@ -37,18 +52,30 @@ namespace Sbiz.Client
             }
             catch(Exception e)
             {
-                _connected = false;
+                Connected = false;
+                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "There is no server listening on this port"));
                 return -1;
             }
+
+            SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED));
            
-            _connected = true;
+            Connected = true;
             return 1;
 
         }
 
         public void SendData(byte[] data)
         {
-            s_conn.BeginSend(data, 0, data.Length,SocketFlags.None, SendCallback, s_conn);
+            try
+            {
+                s_conn.BeginSend(data, 0, data.Length, SocketFlags.None, SendCallback, s_conn);
+            }
+            catch (SocketException se)
+            {
+                Connected = false;
+                SbizClientModel.ModelSyncEvent.Set();
+                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "Server disconnected"));
+            }
         }
 
         private void SendCallback(IAsyncResult ar)
@@ -57,18 +84,19 @@ namespace Sbiz.Client
 
             if (handler.EndSend(ar) < 0)
             {
+                Connected = false;
                 SbizClientModel.ModelSyncEvent.Set();
+                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "Server disconnected"));
             }
         }
 
         public void ShutdownConnection()
         {
-            if (_connected)
+            if (Connected)
             {
                 s_conn.Close();
-                s_conn = null;
 
-                _connected = false;
+                Connected = false;
                 SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.NOT_CONNECTED));
             }
         }
