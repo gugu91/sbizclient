@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModelElements\SbizClientSender.cs" />
+    <Compile Include="ViewControllerElements\SbizClientMouseHandler.cs" />
     <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientConnectUC.cs">
       <SubType>UserControl</SubType>
     </Compile>

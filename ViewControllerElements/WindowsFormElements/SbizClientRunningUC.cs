@@ -24,8 +24,6 @@ namespace Sbiz.Client
         private void SbizClientRunningUC_KeyPress(object sender, KeyPressEventArgs e)
         {
             key_handler.KeyPress(SbizClientRunningTextLabel, e);
-            SbizMessage m = new SbizMessage(SbizMessageConst.KEY_PRESS, Encoding.UTF8.GetBytes(e.KeyChar.ToString()));
-            SbizClientController.ModelSetData(m.ToByteArray());
         }
 
         public void UpdateViewOnModelChanged(object sender, SbizModelChanged_EventArgs args)
@@ -34,6 +32,21 @@ namespace Sbiz.Client
         }
         public void UpdateView(object sender, SbizModelChanged_EventArgs args)
         {
+        }
+
+        private void SbizClientRunningUC_MouseMove(object sender, MouseEventArgs e)
+        {
+            SbizClientMouseHandler.MouseMove(sender, e);
+        }
+
+        private void SbizClientRunningTextLabel_MouseMove(object sender, MouseEventArgs e)
+        {
+            SbizClientMouseHandler.MouseMove(sender, e);
+        }
+
+        private void MainPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            SbizClientMouseHandler.MouseMove(sender, e);
         }
     }
 }

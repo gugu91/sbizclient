@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Sbiz.Library;
 
 namespace Sbiz.Client
 {
@@ -36,6 +37,8 @@ namespace Sbiz.Client
                     text_label.Text += c.ToString();
                 }
             }
+            SbizMessage m = new SbizMessage(SbizMessageConst.KEY_PRESS, Encoding.UTF8.GetBytes(e.KeyChar.ToString()));
+            SbizClientController.ModelSetData(m.ToByteArray());
         }
     }
 }

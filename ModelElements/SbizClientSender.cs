@@ -76,27 +76,31 @@ namespace Sbiz.Client
                 byte[] buffer = new byte[datasize.Length+data.Length];
                 datasize.CopyTo(buffer, 0);
                 data.CopyTo(buffer, datasize.Length);
-                s_conn.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, SendCallback, s_conn);
+                //s_conn.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, SendCallback, s_conn);
+                s_conn.Send(buffer, 0, buffer.Length, SocketFlags.None);
             }
             catch (SocketException se)
             {
-                Connected = false;
-                SbizClientModel.ModelSyncEvent.Set();
-                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "Server disconnected"));
+                if (Connected)
+                {
+                    Connected = false;
+                    SbizClientModel.ModelSyncEvent.Set();
+                    SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "Server disconnected"));
+                }
             }
         }
-
+        /*
         private void SendCallback(IAsyncResult ar)
         {
             Socket handler = (Socket)ar.AsyncState;
 
-            if (handler.EndSend(ar) < 0)
+            if (handler.EndSend(ar) < 0 && Connected)
             {
                 Connected = false;
                 SbizClientModel.ModelSyncEvent.Set();
                 SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "Server disconnected"));
             }
-        }
+        }*/
 
         public void ShutdownConnection()
         {

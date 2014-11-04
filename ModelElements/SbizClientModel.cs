@@ -78,7 +78,7 @@ namespace Sbiz.Client
 
         public static void Stop()
         {
-            ModelSyncEvent.Set();
+            if (ModelSyncEvent != null) ModelSyncEvent.Set();
             if (background_thread != null)
             {
                 background_thread.Join();
