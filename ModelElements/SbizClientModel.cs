@@ -12,78 +12,39 @@ namespace Sbiz.Client
     static class SbizClientModel
     {
         #region Attributes
-        public static SbizClientSender sbiz_socket;
-        public static Thread background_thread;
-        private static AutoResetEvent _model_sync_event;
-        private static SbizQueue<byte[]> _tcp_buffer_queue; /*Coda bloccante thread safe.
-                                                           * Add = put nella coda, 
-                                                           * take = get dalla coda, 
-                                                           * completeadding = 
-                                                           *     chiude la coda(http://msdn.microsoft.com/en-us/library/dd287086.aspx)*/
+        public static SbizClientSender active_scs;
+        //public static List<SbizClientSender> all_scs= new List<SbizClientSender>();//TODO give possibility of multiple connections
         #endregion 
 
         #region Properties
-        public static AutoResetEvent ModelSyncEvent
-        {
-            get
-            {
-                return _model_sync_event;
-            }
-        }
-        public static SbizQueue<byte[]> TCPBufferQueue
-        {
-            get
-            {
-                return _tcp_buffer_queue;
-            }
-        }
         #endregion
 
         #region StaticMethods
-        public static void Init()
+        public static void Connect(System.Net.IPAddress ipaddress, int port)
         {
-            sbiz_socket = new SbizClientSender();
-            background_thread = null;
-            _model_sync_event = new AutoResetEvent(false);
-            _tcp_buffer_queue = new SbizQueue<byte[]>();
+            active_scs = new SbizClientSender();
+            active_scs.Connect(ipaddress, port);
         }
 
-        public static void Start(System.Net.IPAddress ipaddress, int port)
+        public static void SendData(byte[] m)
         {
-            if (background_thread == null)
-            {
-                background_thread = new Thread(() => Task(ipaddress, port));
-
-                background_thread.Start();
-            }
-        }
-
-        private static void Task(System.Net.IPAddress ipaddress, int port)
-        {
-            if (sbiz_socket.Connect(ipaddress, port) == -1) return;
-            byte[] tmp_m;
-            while (SbizClientController.Running && SbizClientSender.Connected)
-            {
-                ModelSyncEvent.WaitOne();
-                tmp_m = null;
-                if(TCPBufferQueue.Dequeue(ref tmp_m)) sbiz_socket.SendData(tmp_m);
-            }
-            
-            tmp_m = null;
-            while(TCPBufferQueue.Dequeue(ref tmp_m)) sbiz_socket.SendData(tmp_m);
-            sbiz_socket.ShutdownConnection();
-        }
-
-        
+            active_scs.SendData(m);
+        }     
 
         public static void Stop()
         {
-            if (ModelSyncEvent != null) ModelSyncEvent.Set();
-            if (background_thread != null)
+            active_scs.ShutdownConnection();   
+        }
+        public static Dictionary<string, bool> RemoteServerNameMap()
+        {
+            //Mutex needed??
+            if(active_scs == null || !active_scs.Connected) return null;
+            else
             {
-                background_thread.Join();
+                Dictionary<string, bool> map = new Dictionary<string, bool>();
+                map.Add(active_scs.Name, true);
+                return map;
             }
-               
         }
     }
         #endregion

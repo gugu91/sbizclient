@@ -36,17 +36,20 @@ namespace Sbiz.Client
 
         private void SbizClientRunningUC_MouseMove(object sender, MouseEventArgs e)
         {
-            SbizClientMouseHandler.MouseMove(sender, e);
+            SbizClientMouseHandler.MouseMove(this, ((Control)sender), e);
         }
 
         private void SbizClientRunningTextLabel_MouseMove(object sender, MouseEventArgs e)
         {
-            SbizClientMouseHandler.MouseMove(sender, e);
+            /*System.Drawing.Point np = this.PointToClient(((Control)sender).PointToScreen(e.Location));
+            MouseEventArgs ne = new MouseEventArgs(e.Button, e.Clicks, np.X, np.Y, e.Delta);
+            this.OnMouseMove(ne);*/
+            SbizClientMouseHandler.MouseMove(this, ((Control)sender), e);
         }
 
         private void MainPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            SbizClientMouseHandler.MouseMove(sender, e);
+            SbizClientMouseHandler.MouseMove(this, ((Control)sender), e);
         }
     }
 }

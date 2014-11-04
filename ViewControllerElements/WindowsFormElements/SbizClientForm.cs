@@ -103,6 +103,38 @@ namespace Sbiz.Client
         {
             SbizClientController.Stop();
         }
+
+        private void SbizClientServersToolStripMenuItem_Paint(object sender, PaintEventArgs e)
+        {
+            Dictionary<string, bool> name_list = SbizClientController.RemoteServerNameList();
+            if (name_list == null)
+            {
+                SbizClientServersToolStripMenuItem.DropDownItems.Clear();
+                this.SbizClientServersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                     this.connectToNewToolStripMenuItem,
+                     this.toolStripSeparator2,
+                     this.noActiveConnectionToolStripMenuItem});
+                noActiveConnectionToolStripMenuItem.Visible = true;
+            }
+            else
+            {
+                SbizClientServersToolStripMenuItem.DropDownItems.Clear();
+                this.SbizClientServersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                     this.connectToNewToolStripMenuItem,
+                     this.toolStripSeparator2});
+                foreach (KeyValuePair<string, bool> name in name_list)
+                {
+                    var item = new ToolStripMenuItem();
+                    item.Text = name.Key;
+                    if (name.Value) item.Checked = true;
+                    //Add method to change item;
+                    SbizClientServersToolStripMenuItem.DropDownItems.Add(item);
+                }
+
+            }
+            
+
+        }
       
 
       

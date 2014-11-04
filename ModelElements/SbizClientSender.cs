@@ -12,10 +12,10 @@ namespace Sbiz.Client
     {
         private Socket s_conn;
         #region RunningRegion
-        private static int _connected; //NB never refer to this object as it is not thread safe
+        private int _connected; //NB never refer to this object as it is not thread safe
         private const int YES = 1;
         private const int NO = 0;
-        public static bool Connected
+        public bool Connected
         {
             get
             {
@@ -34,6 +34,14 @@ namespace Sbiz.Client
                 }
             }
         }
+        public string Name
+        {
+            get
+            {
+                if (Connected) return s_conn.RemoteEndPoint.ToString();
+                return null;
+            }
+        }
         #endregion
 
         public SbizClientSender()
@@ -41,7 +49,7 @@ namespace Sbiz.Client
             Connected = false;
         }
 
-        public int Connect(IPAddress ipaddress, int port)
+        public void Connect(IPAddress ipaddress, int port)
         {
             IPEndPoint ipe = new IPEndPoint(ipaddress, port);
 
@@ -49,20 +57,34 @@ namespace Sbiz.Client
             SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.TRYING));
             try
             {
-                s_conn.Connect(ipe);
+                s_conn.BeginConnect(ipe, ConnectCallback, s_conn);
             }
-            catch(Exception e)
+            catch(SocketException)
             {
                 Connected = false;
                 SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "There is no server listening on this port"));
-                return -1;
             }
+        }
 
-            SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED));
-           
-            Connected = true;
-            return 1;
+        public void ConnectCallback(IAsyncResult ar)
+        {
+            try
+            {
+                ((Socket)ar.AsyncState).EndConnect(ar);
 
+                Connected = true;
+                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED));
+            }
+            catch (SocketException)
+            {
+                Connected = false;
+                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "There is no server listening on this port"));
+            }
+            catch (ObjectDisposedException)
+            {
+                Connected = false;
+                //User shutdown connection, do nothing
+            }
         }
 
         public void SendData(byte[] data)
@@ -72,35 +94,42 @@ namespace Sbiz.Client
                 /* NB there was previously a protocol error as size of the data buffer was not sent, causing
                  * some data to not be processed by server.
                  */
-                byte[] datasize = BitConverter.GetBytes(data.Length);//size of the message is sent
-                byte[] buffer = new byte[datasize.Length+data.Length];
-                datasize.CopyTo(buffer, 0);
-                data.CopyTo(buffer, datasize.Length);
-                //s_conn.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, SendCallback, s_conn);
-                s_conn.Send(buffer, 0, buffer.Length, SocketFlags.None);
+                byte[] buffer = SbizNetUtils.EncapsulateInt32inByteArray(data, data.Length);
+                s_conn.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, SendCallback, s_conn);
+                //s_conn.Send(buffer, 0, buffer.Length, SocketFlags.None);
             }
-            catch (SocketException se)
+            catch (SocketException)
             {
                 if (Connected)
                 {
                     Connected = false;
-                    SbizClientModel.ModelSyncEvent.Set();
                     SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "Server disconnected"));
                 }
             }
         }
-        /*
+        
         private void SendCallback(IAsyncResult ar)
         {
-            Socket handler = (Socket)ar.AsyncState;
-
-            if (handler.EndSend(ar) < 0 && Connected)
+            if (Connected)
             {
-                Connected = false;
-                SbizClientModel.ModelSyncEvent.Set();
-                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "Server disconnected"));
+                Socket handler = (Socket)ar.AsyncState;
+                int nbyte;
+                try
+                {
+                    nbyte = handler.EndSend(ar);
+                }
+                catch (SocketException)
+                {
+                    nbyte = -1;
+                }
+
+                if (nbyte < 0 && Connected)
+                {
+                    Connected = false;
+                    SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "Server disconnected"));
+                }
             }
-        }*/
+        }
 
         public void ShutdownConnection()
         {

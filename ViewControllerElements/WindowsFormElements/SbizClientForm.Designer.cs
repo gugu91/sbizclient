@@ -32,8 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SbizClientForm));
             this.SbizClientNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SbizClientPanel = new System.Windows.Forms.Panel();
-            this.SbizClientConnectView = new Sbiz.Client.SbizClientConnectUC();
-            this.SbizClientRunningView = new Sbiz.Client.SbizClientRunningUC();
             this.SbizClientMenuStrip = new System.Windows.Forms.MenuStrip();
             this.SbizClientMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.SbizClientExitToolStrip = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,6 +42,14 @@
             this.SbizClientTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.SbizClientStatusStrip = new System.Windows.Forms.StatusStrip();
             this.SbizClientConnectionStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.SbizClientServersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectToNewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.SbizClientRunningView = new Sbiz.Client.SbizClientRunningUC();
+            this.SbizClientConnectView = new Sbiz.Client.SbizClientConnectUC();
+            this.noActiveConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SbizClientPanel.SuspendLayout();
             this.SbizClientMenuStrip.SuspendLayout();
             this.SbizClientTableLayoutPanel.SuspendLayout();
@@ -65,30 +71,11 @@
             this.SbizClientPanel.Size = new System.Drawing.Size(441, 176);
             this.SbizClientPanel.TabIndex = 6;
             // 
-            // SbizClientConnectView
-            // 
-            this.SbizClientConnectView.AutoSize = true;
-            this.SbizClientConnectView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SbizClientConnectView.Location = new System.Drawing.Point(0, 0);
-            this.SbizClientConnectView.Name = "SbizClientConnectView";
-            this.SbizClientConnectView.Size = new System.Drawing.Size(441, 176);
-            this.SbizClientConnectView.TabIndex = 6;
-            // 
-            // SbizClientRunningView
-            // 
-            this.SbizClientRunningView.AutoSize = true;
-            this.SbizClientRunningView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SbizClientRunningView.Enabled = false;
-            this.SbizClientRunningView.Location = new System.Drawing.Point(0, 0);
-            this.SbizClientRunningView.Name = "SbizClientRunningView";
-            this.SbizClientRunningView.Size = new System.Drawing.Size(441, 176);
-            this.SbizClientRunningView.TabIndex = 5;
-            this.SbizClientRunningView.Visible = false;
-            // 
             // SbizClientMenuStrip
             // 
             this.SbizClientMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SbizClientMenu,
+            this.SbizClientServersToolStripMenuItem,
             this.SbizClientMenuView,
             this.SbizClientMenuInfo});
             this.SbizClientMenuStrip.Location = new System.Drawing.Point(0, 0);
@@ -100,6 +87,8 @@
             // SbizClientMenu
             // 
             this.SbizClientMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.settingsToolStripMenuItem,
+            this.toolStripSeparator1,
             this.SbizClientExitToolStrip});
             this.SbizClientMenu.Name = "SbizClientMenu";
             this.SbizClientMenu.Size = new System.Drawing.Size(71, 16);
@@ -108,7 +97,7 @@
             // SbizClientExitToolStrip
             // 
             this.SbizClientExitToolStrip.Name = "SbizClientExitToolStrip";
-            this.SbizClientExitToolStrip.Size = new System.Drawing.Size(92, 22);
+            this.SbizClientExitToolStrip.Size = new System.Drawing.Size(152, 22);
             this.SbizClientExitToolStrip.Text = "Exit";
             this.SbizClientExitToolStrip.Click += new System.EventHandler(this.SbizClientExit_Click);
             // 
@@ -179,6 +168,66 @@
             this.SbizClientConnectionStatusLabel.Size = new System.Drawing.Size(88, 15);
             this.SbizClientConnectionStatusLabel.Text = "Not Connected";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            // 
+            // SbizClientServersToolStripMenuItem
+            // 
+            this.SbizClientServersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectToNewToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.noActiveConnectionToolStripMenuItem});
+            this.SbizClientServersToolStripMenuItem.Name = "SbizClientServersToolStripMenuItem";
+            this.SbizClientServersToolStripMenuItem.Size = new System.Drawing.Size(56, 16);
+            this.SbizClientServersToolStripMenuItem.Text = "Servers";
+            this.SbizClientServersToolStripMenuItem.Paint += new System.Windows.Forms.PaintEventHandler(this.SbizClientServersToolStripMenuItem_Paint);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // connectToNewToolStripMenuItem
+            // 
+            this.connectToNewToolStripMenuItem.Name = "connectToNewToolStripMenuItem";
+            this.connectToNewToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.connectToNewToolStripMenuItem.Text = "Connect to new";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(184, 6);
+            // 
+            // SbizClientRunningView
+            // 
+            this.SbizClientRunningView.AutoSize = true;
+            this.SbizClientRunningView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SbizClientRunningView.Enabled = false;
+            this.SbizClientRunningView.Location = new System.Drawing.Point(0, 0);
+            this.SbizClientRunningView.Name = "SbizClientRunningView";
+            this.SbizClientRunningView.Size = new System.Drawing.Size(441, 176);
+            this.SbizClientRunningView.TabIndex = 5;
+            this.SbizClientRunningView.Visible = false;
+            // 
+            // SbizClientConnectView
+            // 
+            this.SbizClientConnectView.AutoSize = true;
+            this.SbizClientConnectView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SbizClientConnectView.Location = new System.Drawing.Point(0, 0);
+            this.SbizClientConnectView.Name = "SbizClientConnectView";
+            this.SbizClientConnectView.Size = new System.Drawing.Size(441, 176);
+            this.SbizClientConnectView.TabIndex = 6;
+            // 
+            // noActiveConnectionToolStripMenuItem
+            // 
+            this.noActiveConnectionToolStripMenuItem.Enabled = false;
+            this.noActiveConnectionToolStripMenuItem.Name = "noActiveConnectionToolStripMenuItem";
+            this.noActiveConnectionToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.noActiveConnectionToolStripMenuItem.Text = "No active connection";
+            // 
             // SbizClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -222,6 +271,12 @@
         private System.Windows.Forms.ToolStripStatusLabel SbizClientConnectionStatusLabel;
         private SbizClientRunningUC SbizClientRunningView;
         private SbizClientConnectUC SbizClientConnectView;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem SbizClientServersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem connectToNewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem noActiveConnectionToolStripMenuItem;
     }
 }
 

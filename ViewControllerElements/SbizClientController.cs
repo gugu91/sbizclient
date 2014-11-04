@@ -53,8 +53,7 @@ namespace Sbiz.Client
         public static void Start(System.Net.IPAddress ipaddress, int port)
         {
             Running = true;
-            SbizClientModel.Init();
-            SbizClientModel.Start(ipaddress,port);
+            SbizClientModel.Connect(ipaddress,port);
         }
 
         public static void Stop()
@@ -74,8 +73,12 @@ namespace Sbiz.Client
 
         public static void ModelSetData(byte[] data)
         {
-            SbizClientModel.TCPBufferQueue.Enqueue(data);
-            SbizClientModel.ModelSyncEvent.Set();
+            SbizClientModel.SendData(data);
+        }
+
+        public static Dictionary<string, bool> RemoteServerNameList()
+        {
+            return SbizClientModel.RemoteServerNameMap();
         }
     }
 }
