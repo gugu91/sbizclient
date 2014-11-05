@@ -17,8 +17,11 @@ namespace Sbiz.Client
         public SbizClientRunningUC()
         {
             InitializeComponent();
+            this.MainPanel.MouseWheel += MainPanel_MouseWheel;
+            this.SbizClientRunningTextLabel.MouseWheel += SbizClientRunningTextLabel_MouseWheel;
             //SbizClientController.RegisterView(this);
             key_handler = new SbizClientKeyHandler();
+            MainPanel.Focus();
         }
 
         private void SbizClientRunningUC_KeyPress(object sender, KeyPressEventArgs e)
@@ -50,6 +53,36 @@ namespace Sbiz.Client
         private void MainPanel_MouseMove(object sender, MouseEventArgs e)
         {
             SbizClientMouseHandler.MouseMove(this, ((Control)sender), e);
+        }
+
+        private void SbizClientRunningTextLabel_MouseUp(object sender, MouseEventArgs e)
+        {
+            SbizClientMouseHandler.MouseUp(this, (Control)sender, e);
+        }
+
+        private void MainPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            SbizClientMouseHandler.MouseUp(this, (Control)sender, e);
+        }
+
+        private void SbizClientRunningUC_MouseUp(object sender, MouseEventArgs e)
+        {
+            SbizClientMouseHandler.MouseUp(this, (Control)sender, e);
+        }
+
+        private void MainPanel_MouseWheel(object sender, MouseEventArgs e)
+        {
+            SbizClientRunningTextLabel.Text = "Rotellina";
+        }
+
+        private void SbizClientRunningTextLabel_MouseWheel(object sender, MouseEventArgs e)
+        {
+            SbizClientRunningTextLabel.Text = "Rotellina";
+        }
+
+        private void SbizClientRunningTextLabel_MouseHover(object sender, EventArgs e)
+        {
+            this.MainPanel.Focus();
         }
     }
 }
