@@ -26,5 +26,13 @@ namespace Sbiz.Client
             SbizMessage m = new SbizMessage(SbizMessageConst.MOUSE_MOVE, smea.ToByteArray());
             SbizClientController.ModelSetData(m.ToByteArray());
         }
+
+        public static void MouseWheel(SbizClientRunningUC uc, Control sender, MouseEventArgs e)
+        {
+            System.Drawing.Point p = uc.PointToClient(sender.PointToScreen(e.Location));
+            SbizMouseEventArgs smea = new SbizMouseEventArgs(e.Button, e.Clicks, e.Delta, p.X, p.Y, uc.Bounds.Width, uc.Bounds.Height);
+            SbizMessage m = new SbizMessage(SbizMessageConst.MOUSE_MOVE, smea.ToByteArray());
+            SbizClientController.ModelSetData(m.ToByteArray());
+        }
     }
 }

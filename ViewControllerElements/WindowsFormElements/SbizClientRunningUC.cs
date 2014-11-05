@@ -17,10 +17,10 @@ namespace Sbiz.Client
         public SbizClientRunningUC()
         {
             InitializeComponent();
-            this.MainPanel.MouseWheel += MainPanel_MouseWheel;
+            this.MouseWheel += SbizClientRunningUC_MouseWheel;
             //SbizClientController.RegisterView(this);
             key_handler = new SbizClientKeyHandler();
-            MainPanel.Focus();
+            Focus();
         }
 
         private void SbizClientRunningUC_KeyPress(object sender, KeyPressEventArgs e)
@@ -69,14 +69,14 @@ namespace Sbiz.Client
             SbizClientMouseHandler.MouseUp(this, (Control)sender, e);
         }
 
-        private void MainPanel_MouseWheel(object sender, MouseEventArgs e)
+        private void SbizClientRunningUC_MouseWheel(object sender, MouseEventArgs e)
         {
-            SbizClientRunningTextLabel.Text = "Rotellina";
+            SbizClientMouseHandler.MouseWheel(this, (Control)sender, e);
         }
 
         private void SbizClientRunningTextLabel_MouseHover(object sender, EventArgs e)
         {
-            this.MainPanel.Focus();
+            this.Focus();
         }
     }
 }
