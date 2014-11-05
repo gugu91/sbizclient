@@ -28,6 +28,16 @@ namespace Sbiz.Client
             key_handler.KeyPress(SbizClientRunningTextLabel, e);
         }
 
+        private void SbizClientRunningUC_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            key_handler.PreviewKeyDown(SbizClientRunningTextLabel, e);
+        }
+
+        private void SbizClientRunningUC_KeyDown(object sender, KeyEventArgs e)
+        {
+            key_handler.KeyDown(SbizClientRunningTextLabel, e);
+        }
+
         public void UpdateViewOnModelChanged(object sender, SbizModelChanged_EventArgs args)
         {
             BeginInvoke(new SbizUpdateView_Delegate(UpdateView), new object[] { sender, args });

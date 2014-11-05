@@ -40,5 +40,15 @@ namespace Sbiz.Client
             SbizMessage m = new SbizMessage(SbizMessageConst.KEY_PRESS, Encoding.UTF8.GetBytes(e.KeyChar.ToString()));
             SbizClientController.ModelSetData(m.ToByteArray());
         }
+
+        public void PreviewKeyDown(Label text_label, PreviewKeyDownEventArgs e)
+        {
+
+        }
+
+        public void KeyDown(Label text_label, KeyEventArgs e)
+        {
+
+        }
     }
 }
