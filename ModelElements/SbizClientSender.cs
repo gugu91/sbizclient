@@ -71,7 +71,7 @@ namespace Sbiz.Client
             try
             {
                 ((Socket)ar.AsyncState).EndConnect(ar);
-
+                ((Socket)ar.AsyncState).NoDelay = true;
                 Connected = true;
                 SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED));
             }
