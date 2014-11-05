@@ -18,7 +18,6 @@ namespace Sbiz.Client
         {
             InitializeComponent();
             this.MainPanel.MouseWheel += MainPanel_MouseWheel;
-            this.SbizClientRunningTextLabel.MouseWheel += SbizClientRunningTextLabel_MouseWheel;
             //SbizClientController.RegisterView(this);
             key_handler = new SbizClientKeyHandler();
             MainPanel.Focus();
@@ -71,11 +70,6 @@ namespace Sbiz.Client
         }
 
         private void MainPanel_MouseWheel(object sender, MouseEventArgs e)
-        {
-            SbizClientRunningTextLabel.Text = "Rotellina";
-        }
-
-        private void SbizClientRunningTextLabel_MouseWheel(object sender, MouseEventArgs e)
         {
             SbizClientRunningTextLabel.Text = "Rotellina";
         }

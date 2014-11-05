@@ -33,7 +33,7 @@ namespace Sbiz.Client
 
         public static void Stop()
         {
-            active_scs.ShutdownConnection();   
+            if (active_scs != null) active_scs.ShutdownConnection();   
         }
         public static Dictionary<string, bool> RemoteServerNameMap()
         {
