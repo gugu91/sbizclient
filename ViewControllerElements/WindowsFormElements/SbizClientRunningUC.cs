@@ -74,9 +74,42 @@ namespace Sbiz.Client
             SbizClientMouseHandler.MouseWheel(this, (Control)sender, e);
         }
 
+        private void SbizClientRunningTextLabel_MouseDown(object sender, MouseEventArgs e)
+        {
+            SbizClientMouseHandler.MouseDown(this, (Control)sender, e);
+        }
+
+        private void MainPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            SbizClientMouseHandler.MouseDown(this, (Control)sender, e);
+        }
+
+        private void SbizClientRunningUC_MouseDown(object sender, MouseEventArgs e)
+        {
+            SbizClientMouseHandler.MouseDown(this, (Control)sender, e);
+        }
+
         private void SbizClientRunningTextLabel_MouseHover(object sender, EventArgs e)
         {
             this.Focus();
         }
+
+        private void MainPanel_MouseHover(object sender, EventArgs e)
+        {
+            this.Focus();
+        }
+        /*
+        #region HorizontalScrolling
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (m.HWnd != this.Handle)
+            {
+                return;
+            }
+            SbizClientRunningTextLabel.Text = m.Msg.ToString();
+        }
+        #endregion
+         * */
     }
 }

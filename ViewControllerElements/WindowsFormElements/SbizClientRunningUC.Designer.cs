@@ -41,6 +41,8 @@
             this.MainPanel.Name = "MainPanel";
             this.MainPanel.Size = new System.Drawing.Size(728, 354);
             this.MainPanel.TabIndex = 7;
+            this.MainPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainPanel_MouseDown);
+            this.MainPanel.MouseHover += new System.EventHandler(this.MainPanel_MouseHover);
             this.MainPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainPanel_MouseMove);
             this.MainPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MainPanel_MouseUp);
             // 
@@ -54,6 +56,7 @@
             this.SbizClientRunningTextLabel.TabIndex = 0;
             this.SbizClientRunningTextLabel.Text = "Welcome!";
             this.SbizClientRunningTextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.SbizClientRunningTextLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningTextLabel_MouseDown);
             this.SbizClientRunningTextLabel.MouseHover += new System.EventHandler(this.SbizClientRunningTextLabel_MouseHover);
             this.SbizClientRunningTextLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningTextLabel_MouseMove);
             this.SbizClientRunningTextLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningTextLabel_MouseUp);
@@ -67,6 +70,7 @@
             this.Name = "SbizClientRunningUC";
             this.Size = new System.Drawing.Size(728, 354);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SbizClientRunningUC_KeyPress);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningUC_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningUC_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningUC_MouseUp);
             this.MainPanel.ResumeLayout(false);

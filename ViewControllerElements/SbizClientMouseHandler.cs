@@ -12,24 +12,29 @@ namespace Sbiz.Client
     {
         public static void MouseMove(SbizClientRunningUC uc, Control sender, MouseEventArgs e)
         {
-            BasicMouse(uc, sender, e);
+            BasicMouse(uc, sender, e, SbizMessageConst.MOUSE_MOVE);
         }
 
         public static void MouseUp(SbizClientRunningUC uc, Control sender, MouseEventArgs e)
         {
-            BasicMouse(uc, sender, e);
+            BasicMouse(uc, sender, e, SbizMessageConst.MOUSE_UP);
+        }
+
+        public static void MouseDown(SbizClientRunningUC uc, Control sender, MouseEventArgs e)
+        {
+            BasicMouse(uc, sender, e, SbizMessageConst.MOUSE_DOWN);
         }
 
         public static void MouseWheel(SbizClientRunningUC uc, Control sender, MouseEventArgs e)
         {
-            BasicMouse(uc, sender, e);
+            BasicMouse(uc, sender, e, SbizMessageConst.MOUSE_WHEEL);
         }
 
-        private static void BasicMouse(SbizClientRunningUC uc, Control sender, MouseEventArgs e)
+        private static void BasicMouse(SbizClientRunningUC uc, Control sender, MouseEventArgs e, int type)
         {
             System.Drawing.Point p = uc.PointToClient(sender.PointToScreen(e.Location));
             SbizMouseEventArgs smea = new SbizMouseEventArgs(e.Button, e.Clicks, e.Delta/SystemInformation.MouseWheelScrollDelta, p.X, p.Y, uc.Bounds.Width, uc.Bounds.Height);
-            SbizMessage m = new SbizMessage(SbizMessageConst.MOUSE_MOVE, smea.ToByteArray());
+            SbizMessage m = new SbizMessage(type , smea.ToByteArray());
             SbizClientController.ModelSetData(m.ToByteArray());
         }
     }
