@@ -17,6 +17,7 @@ namespace Sbiz.Client
         {
             InitializeComponent();
             SbizClientController.RegisterView(this);
+            SbizClientModel.Start(15001);
         }
 
         public void UpdateViewOnModelChanged(object sender, SbizModelChanged_EventArgs args)
@@ -106,12 +107,12 @@ namespace Sbiz.Client
 
         private void SbizClientServersToolStripMenuItem_Paint(object sender, PaintEventArgs e)
         {
-            Dictionary<string, bool> name_list = SbizClientController.RemoteServerNameList();
+            List<string> name_list = SbizClientController.GetConnectedServersName();
             if (name_list == null)
             {
                 SbizClientServersToolStripMenuItem.DropDownItems.Clear();
                 this.SbizClientServersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                     this.connectToNewToolStripMenuItem,
+                     this.SbizClientConnectToNewToolStripMenuItem,
                      this.toolStripSeparator2,
                      this.noActiveConnectionToolStripMenuItem});
                 noActiveConnectionToolStripMenuItem.Visible = true;
@@ -120,22 +121,46 @@ namespace Sbiz.Client
             {
                 SbizClientServersToolStripMenuItem.DropDownItems.Clear();
                 this.SbizClientServersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                     this.connectToNewToolStripMenuItem,
+                     this.SbizClientConnectToNewToolStripMenuItem,
                      this.toolStripSeparator2});
-                foreach (KeyValuePair<string, bool> name in name_list)
+                foreach (var name in name_list)
                 {
                     var item = new ToolStripMenuItem();
-                    item.Text = name.Key;
-                    if (name.Value) item.Checked = true;
+                    item.Text = name;
+                    item.Click += ActiveChange;
                     //Add method to change item;
                     SbizClientServersToolStripMenuItem.DropDownItems.Add(item);
                 }
 
             }
-            
+
+            name_list = SbizClientController.GetOtherServersName();
+            if (name_list == null)
+            {
+                SbizClientConnectToNewToolStripMenuItem.DropDownItems.Clear();
+            }
+            else
+            {
+                SbizClientConnectToNewToolStripMenuItem.DropDownItems.Clear();
+                foreach (var name in name_list)
+                {
+                    var item = new ToolStripMenuItem();
+                    item.Text = name;
+                    item.Click += ActiveChange;
+                    //Add method to change item;
+                    SbizClientConnectToNewToolStripMenuItem.DropDownItems.Add(item);
+                }
+
+            }
 
         }
-      
+
+        private void ActiveChange(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+            SbizClientController.Connect(item.Text);
+        }
+            
 
       
 }

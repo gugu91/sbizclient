@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelElements\SbizClientAnnouncer.cs" />
     <Compile Include="ModelElements\SbizClientSender.cs" />
     <Compile Include="ViewControllerElements\SbizClientMouseHandler.cs" />
     <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientConnectUC.cs">

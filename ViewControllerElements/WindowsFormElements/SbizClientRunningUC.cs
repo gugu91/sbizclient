@@ -107,7 +107,7 @@ namespace Sbiz.Client
             {
                 return;
             }
-            SbizClientRunningTextLabel.Text = m.Msg.ToString();
+            SbizClientRunningTextLabel.Text = m.Msg.ToString("X") +" " + m.GetHashCode();
         }
         #endregion
          * */

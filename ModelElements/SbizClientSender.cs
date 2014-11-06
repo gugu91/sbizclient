@@ -8,10 +8,14 @@ using Sbiz.Library;
 
 namespace Sbiz.Client
 {
-    class SbizClientSender
+    public class SbizClientSender
     {
+        private IPAddress _ip_add;
+        private int _tcp_port;
         private Socket s_conn;
-        #region RunningRegion
+        private String _name;
+        private Int64 _last_seen;
+        #region ConnectedRegion
         private int _connected; //NB never refer to this object as it is not thread safe
         private const int YES = 1;
         private const int NO = 0;
@@ -19,7 +23,10 @@ namespace Sbiz.Client
         {
             get
             {
-                if (_connected == YES) return true;
+                if (_connected == YES)
+                {
+                    return true;
+                }
                 else return false;
             }
             set
@@ -38,20 +45,42 @@ namespace Sbiz.Client
         {
             get
             {
-                if (Connected) return s_conn.RemoteEndPoint.ToString();
-                return null;
+                return _name;
+            }
+        }
+        public DateTime LastSeen
+        {
+            get
+            {
+                if (Connected) LastSeen = DateTime.Now;
+                return new DateTime(_last_seen);
+            }
+            set
+            {
+                System.Threading.Interlocked.Exchange(ref _last_seen, value.Ticks);
+            }
+        }
+        public string Identifier
+        {
+            get
+            {
+                return _ip_add.ToString() + ":" + _tcp_port.ToString();
             }
         }
         #endregion
 
-        public SbizClientSender()
+        public SbizClientSender(IPAddress ip, int tcp_port)
         {
+            _ip_add = ip;
+            _tcp_port = tcp_port;
+            _name = ip.ToString() + ":" + tcp_port.ToString();
             Connected = false;
         }
 
-        public void Connect(IPAddress ipaddress, int port)
+
+        public void Connect()
         {
-            IPEndPoint ipe = new IPEndPoint(ipaddress, port);
+            IPEndPoint ipe = new IPEndPoint(_ip_add, _tcp_port);
 
             s_conn = new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.TRYING));

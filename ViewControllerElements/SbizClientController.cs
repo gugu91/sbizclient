@@ -56,6 +56,13 @@ namespace Sbiz.Client
             SbizClientModel.Connect(ipaddress,port);
         }
 
+        public static void Connect(string identifier)
+        {
+            Running = true;
+            SbizClientModel.Connect(identifier);
+        }
+
+
         public static void Stop()
         {
             Running = false;
@@ -76,9 +83,19 @@ namespace Sbiz.Client
             SbizClientModel.SendData(data);
         }
 
-        public static Dictionary<string, bool> RemoteServerNameList()
+        public static List<string> GetConnectedServersName()
         {
-            return SbizClientModel.RemoteServerNameMap();
+            return SbizClientModel.GetConnectedServersName();
+        }
+
+        public static List<string> GetOtherServersName()
+        {
+            return SbizClientModel.GetOtherServersName();
+        }
+
+        public static string GetActiveServersName()
+        {
+            return SbizClientModel.GetSctiveServerName();
         }
     }
 }
