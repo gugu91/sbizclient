@@ -42,7 +42,7 @@ namespace Sbiz.Client
                 return;
             }
 
-            SbizClientController.Start(ipaddr, port);
+            SbizClientController.Connect(ipaddr, port);
         }
                 public void UpdateViewOnModelChanged(object sender, SbizModelChanged_EventArgs args)
         {

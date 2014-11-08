@@ -50,23 +50,72 @@ namespace Sbiz.Client
         }
         #endregion
 
-        public static void Start(System.Net.IPAddress ipaddress, int port)
+        private static Dictionary<string, SbizAnnouncerInfo> _announced_servers = new Dictionary<string, SbizAnnouncerInfo>();
+        public static Dictionary<string, string> AnnouncedServers
+        {
+            get
+            {
+                Dictionary<string, string> ret_map = new Dictionary<string,string>();
+                lock (_announced_servers)
+                {
+
+                    List<string> removals = new List<string>();
+                    foreach (var element in _announced_servers.Values)
+                    {
+                        if (DateTime.Now.Subtract(element.LastSeen) > SbizClientAnnounceReceivingModel.ServerTimeout)
+                        {
+                            removals.Add(element.Identifier);
+                        }
+                        else
+                        {
+                            ret_map.Add(element.Identifier, element.Name);
+                        }
+                    }
+
+                    foreach (var key in removals) _announced_servers.Remove(key);
+                    if(_announced_servers.Count > 20) _announced_servers.Clear();//NB this is to avoid an attack
+                }
+                return ret_map;
+            }
+        }
+        public static void Start()
         {
             Running = true;
-            SbizClientModel.Connect(ipaddress,port);
+            ModelChanged += AddAnnouncedServer;
+            ModelChanged += SbizClientMessageSendingModel.RemoveDisconnected;
+            SbizClientAnnounceReceivingModel.Start(15001);//TODO add configuration for port
         }
-
+        public static void Connect(System.Net.IPAddress ipaddress, int port)
+        {
+            Running = true;
+            SbizClientMessageSendingModel.Connect(ipaddress,port);
+        }
         public static void Connect(string identifier)
         {
             Running = true;
-            SbizClientModel.Connect(identifier);
+            System.Net.IPAddress ipaddress = null;
+            Int32 port = -1;
+            lock (_announced_servers)
+            {
+                if (_announced_servers.ContainsKey(identifier))
+                {
+                    ipaddress = _announced_servers[identifier].IpAdd;
+                    port = _announced_servers[identifier].TCPPort;
+                }
+            }
+            SbizClientMessageSendingModel.Connect(ipaddress, port);
         }
-
+        public static void Disconnect(string identifier)
+        {
+            Running = true;
+            //MISSING
+        }
 
         public static void Stop()
         {
             Running = false;
-            SbizClientModel.Stop();
+            SbizClientMessageSendingModel.Stop();
+            SbizClientAnnounceReceivingModel.Stop();
         }
 
         public static void RegisterView(SbizControl view) //Call this from a view to subscribe the event
@@ -80,22 +129,55 @@ namespace Sbiz.Client
 
         public static void ModelSetData(byte[] data)
         {
-            SbizClientModel.SendData(data);
+            SbizClientMessageSendingModel.SendData(data);
         }
 
-        public static List<string> GetConnectedServersName()
+        public static void AddAnnouncedServer(object sender, SbizModelChanged_EventArgs args)
         {
-            return SbizClientModel.GetConnectedServersName();
-        }
+            if (args.Status == SbizModelChanged_EventArgs.DISCOVERED_SERVER)
+            {
+                SbizAnnouncerInfo serv = (SbizAnnouncerInfo)args.ExtraArg;
 
-        public static List<string> GetOtherServersName()
-        {
-            return SbizClientModel.GetOtherServersName();
-        }
+                lock (_announced_servers)
+                {
+                    if (_announced_servers.ContainsKey(serv.Identifier))
+                    {
+                        _announced_servers[serv.Identifier].LastSeen = DateTime.Now;
+                    }
+                    else
+                    {
+                        _announced_servers.Add(serv.Identifier, serv);
+                    }
+                }
+            }
+            /*
+            else if (args.Status == SbizModelChanged_EventArgs.CONNECTED)
+            {
+                string identifier = (string)args.ExtraArg;
 
-        public static string GetActiveServersName()
-        {
-            return SbizClientModel.GetSctiveServerName();
+                lock (_announced_servers)
+                {
+                    if (_announced_servers.ContainsKey(identifier))
+                    {
+                        _announced_servers[identifier].LastSeen = DateTime.Now;
+                        _announced_servers[identifier].Connected = true;
+                    }
+                }
+            }
+            else if (args.Status == SbizModelChanged_EventArgs.NOT_CONNECTED || args.Status == SbizModelChanged_EventArgs.ERROR)
+            {
+                string identifier = (string)args.ExtraArg;
+
+                lock (_announced_servers)
+                {
+                    if (_announced_servers.ContainsKey(identifier))
+                    {
+                        _announced_servers[identifier].LastSeen = DateTime.Now;
+                        _announced_servers[identifier].Connected = false;
+                    }
+                }
+            }
+             * */
         }
     }
 }

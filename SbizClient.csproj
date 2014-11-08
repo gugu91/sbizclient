@@ -51,8 +51,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelElements\SbizClientAnnouncer.cs" />
-    <Compile Include="ModelElements\SbizClientSender.cs" />
+    <Compile Include="ModelElements\SbizClientAnnounceReceivingModel.cs" />
+    <Compile Include="ModelElements\SbizMessageSender.cs" />
+    <Compile Include="ModelElements\SbizAnnouncerInfo.cs" />
     <Compile Include="ViewControllerElements\SbizClientMouseHandler.cs" />
     <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientConnectUC.cs">
       <SubType>UserControl</SubType>
@@ -62,7 +63,7 @@
     </Compile>
     <Compile Include="ViewControllerElements\SbizClientController.cs" />
     <Compile Include="ViewControllerElements\SbizClientKeyHandler.cs" />
-    <Compile Include="ModelElements\SbizClientModel.cs" />
+    <Compile Include="ModelElements\SbizClientMessageSendingModel.cs" />
     <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientForm.cs">
       <SubType>Form</SubType>
     </Compile>

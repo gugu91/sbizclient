@@ -8,13 +8,11 @@ using Sbiz.Library;
 
 namespace Sbiz.Client
 {
-    public class SbizClientSender
+    public class SbizMessageSender
     {
         private IPAddress _ip_add;
         private int _tcp_port;
         private Socket s_conn;
-        private String _name;
-        private Int64 _last_seen;
         #region ConnectedRegion
         private int _connected; //NB never refer to this object as it is not thread safe
         private const int YES = 1;
@@ -41,25 +39,7 @@ namespace Sbiz.Client
                 }
             }
         }
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-        }
-        public DateTime LastSeen
-        {
-            get
-            {
-                if (Connected) LastSeen = DateTime.Now;
-                return new DateTime(_last_seen);
-            }
-            set
-            {
-                System.Threading.Interlocked.Exchange(ref _last_seen, value.Ticks);
-            }
-        }
+        #endregion
         public string Identifier
         {
             get
@@ -67,13 +47,12 @@ namespace Sbiz.Client
                 return _ip_add.ToString() + ":" + _tcp_port.ToString();
             }
         }
-        #endregion
+        
 
-        public SbizClientSender(IPAddress ip, int tcp_port)
+        public SbizMessageSender(IPAddress ip, int tcp_port)
         {
             _ip_add = ip;
             _tcp_port = tcp_port;
-            _name = ip.ToString() + ":" + tcp_port.ToString();
             Connected = false;
         }
 
@@ -91,7 +70,8 @@ namespace Sbiz.Client
             catch(SocketException)
             {
                 Connected = false;
-                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "There is no server listening on this port"));
+                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, 
+                    "There is no server listening on this port", this.Identifier));
             }
         }
 
@@ -99,15 +79,18 @@ namespace Sbiz.Client
         {
             try
             {
-                ((Socket)ar.AsyncState).EndConnect(ar);
-                ((Socket)ar.AsyncState).NoDelay = true;
+                Socket s = (Socket)ar.AsyncState;
+                s.EndConnect(ar);
+                s.NoDelay = true;
                 Connected = true;
-                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED));
+                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED,
+                    "Connected to server", this.Identifier));
             }
             catch (SocketException)
             {
                 Connected = false;
-                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "There is no server listening on this port"));
+                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, 
+                    "There is no server listening on this port", this.Identifier));
             }
             catch (ObjectDisposedException)
             {
@@ -132,7 +115,8 @@ namespace Sbiz.Client
                 if (Connected)
                 {
                     Connected = false;
-                    SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "Server disconnected"));
+                    SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, 
+                        "Server disconnected", this.Identifier));
                 }
             }
         }
@@ -155,7 +139,8 @@ namespace Sbiz.Client
                 if (nbyte < 0 && Connected)
                 {
                     Connected = false;
-                    SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR, "Server disconnected"));
+                    SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.ERROR,
+                        "Server disconnected", this.Identifier));
                 }
             }
         }
@@ -167,7 +152,8 @@ namespace Sbiz.Client
                 s_conn.Close();
 
                 Connected = false;
-                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.NOT_CONNECTED));
+                SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.NOT_CONNECTED,
+                    "Not connected to server", this.Identifier));
             }
         }
     }

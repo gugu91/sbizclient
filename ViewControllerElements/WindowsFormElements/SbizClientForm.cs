@@ -17,7 +17,7 @@ namespace Sbiz.Client
         {
             InitializeComponent();
             SbizClientController.RegisterView(this);
-            SbizClientModel.Start(15001);
+            SbizClientController.Start();
         }
 
         public void UpdateViewOnModelChanged(object sender, SbizModelChanged_EventArgs args)
@@ -27,7 +27,7 @@ namespace Sbiz.Client
 
         public void UpdateView(object sender, SbizModelChanged_EventArgs args)
         {
-            if (sender is SbizClientSender)
+            if (sender is SbizMessageSender)
             {
                 if (args.Status == SbizModelChanged_EventArgs.CONNECTED)
                 {
@@ -73,6 +73,10 @@ namespace Sbiz.Client
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
                     MessageBox.Show(args.Error_message);
                 }
+                else if (args.Status == SbizModelChanged_EventArgs.DISCOVERED_SERVER)
+                {
+
+                }
             }
         }
 
@@ -107,62 +111,82 @@ namespace Sbiz.Client
 
         private void SbizClientServersToolStripMenuItem_Paint(object sender, PaintEventArgs e)
         {
-            List<string> name_list = SbizClientController.GetConnectedServersName();
-            if (name_list == null)
+            var announced = SbizClientController.AnnouncedServers;
+            var connected = SbizClientMessageSendingModel.ConnectedServers;
+
+            #region ConnectToNewTooolstrip
+            SbizClientConnectToNewToolStripMenuItem.DropDownItems.Clear();
+            int cnt = 0;
+            if (announced != null || announced.Count != 0)
             {
-                SbizClientServersToolStripMenuItem.DropDownItems.Clear();
-                this.SbizClientServersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                     this.SbizClientConnectToNewToolStripMenuItem,
-                     this.toolStripSeparator2,
-                     this.noActiveConnectionToolStripMenuItem});
-                SbizClientServersToolStripMenuItem.DropDownItems.
-                noActiveConnectionToolStripMenuItem.Visible = true;
+                foreach (var element in announced)
+                {
+                    if (!connected.ContainsKey(element.Key))
+                    {
+                        var item = new ToolStripMenuItem();
+                        item.Name = element.Key;
+                        item.Text = element.Value;
+                        item.Click += Connect;
+                        SbizClientConnectToNewToolStripMenuItem.DropDownItems.Add(item);
+                        cnt++;
+                    }
+                }
+            }
+            if (cnt == 0) SbizClientConnectToNewToolStripMenuItem.DropDownItems.Add(this.noOtherServerOnThisNetworkToolStripMenuItem);
+            #endregion
+
+            #region ServersToolstrip
+            int index = SbizClientServersToolStripMenuItem.DropDownItems.IndexOf(toolStripSeparator2);
+            for (int i = SbizClientServersToolStripMenuItem.DropDownItems.Count-1; i  > index ; i--) //NB devi rimuovere a partire dal fondo in ste collezioni
+                SbizClientServersToolStripMenuItem.DropDownItems.RemoveAt(i);
+            cnt = 0;
+            if (connected != null || connected.Count != 0)
+            {
+                foreach (var element in connected)
+                {
+                    if (announced.ContainsKey(element.Key))
+                    {
+                        var item = new ToolStripMenuItem();
+                        item.Name = element.Key;
+                        item.Text = announced[item.Name];
+                        if (element.Value) item.Checked = true;
+                        //Add method to change item;
+                        index++;
+                        SbizClientServersToolStripMenuItem.DropDownItems.Insert(index, item);
+                        cnt++;
+                    }
+                }
+            }
+            if(cnt == 0) {
+                noActiveConnectionToolStripMenuItem.Text = "No active connection";
+                noActiveConnectionToolStripMenuItem.Enabled = false;
             }
             else
             {
-                SbizClientServersToolStripMenuItem.DropDownItems.Clear();
-                this.SbizClientServersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                     this.SbizClientConnectToNewToolStripMenuItem,
-                     this.toolStripSeparator2});
-                foreach (var name in name_list)
-                {
-                    var item = new ToolStripMenuItem();
-                    item.Text = name;
-                    item.Click += ActiveChange;
-                    //Add method to change item;
-                    SbizClientServersToolStripMenuItem.DropDownItems.Add(item);
-                }
-
+                noActiveConnectionToolStripMenuItem.Text = "Disconnect from target";
+                noActiveConnectionToolStripMenuItem.Enabled = true;
+                SbizClientServersToolStripMenuItem.DropDownItems.Add(toolStripSeparator3);
             }
-
-            name_list = SbizClientController.GetOtherServersName();
-            if (name_list == null)
-            {
-                SbizClientConnectToNewToolStripMenuItem.DropDownItems.Clear();
-            }
-            else
-            {
-                SbizClientConnectToNewToolStripMenuItem.DropDownItems.Clear();
-                foreach (var name in name_list)
-                {
-                    var item = new ToolStripMenuItem();
-                    item.Text = name;
-                    item.Click += ActiveChange;
-                    //Add method to change item;
-                    SbizClientConnectToNewToolStripMenuItem.DropDownItems.Add(item);
-                }
-
-            }
-
+            
+            SbizClientServersToolStripMenuItem.DropDownItems.Add(noActiveConnectionToolStripMenuItem);
+            #endregion
         }
 
         private void ActiveChange(object sender, EventArgs e)
         {
-            ToolStripMenuItem item = (ToolStripMenuItem)sender;
-            SbizClientController.Connect(item.Text);
+            //TODO implement active change
         }
-            
 
+        private void Connect(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = (ToolStripMenuItem)sender;
+            SbizClientController.Connect(item.Name);
+        }
+
+        private void noActiveConnectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //TODO Disconnect from target
+        }
       
 }
  
