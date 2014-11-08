@@ -115,6 +115,7 @@ namespace Sbiz.Client
                      this.SbizClientConnectToNewToolStripMenuItem,
                      this.toolStripSeparator2,
                      this.noActiveConnectionToolStripMenuItem});
+                SbizClientServersToolStripMenuItem.DropDownItems.
                 noActiveConnectionToolStripMenuItem.Visible = true;
             }
             else
