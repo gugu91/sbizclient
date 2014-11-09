@@ -51,7 +51,6 @@
             this.noOtherServerOnThisNetworkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.SbizClientRunningView = new Sbiz.Client.SbizClientRunningUC();
-            this.SbizClientConnectView = new Sbiz.Client.SbizClientConnectUC();
             this.SbizClientPanel.SuspendLayout();
             this.SbizClientMenuStrip.SuspendLayout();
             this.SbizClientTableLayoutPanel.SuspendLayout();
@@ -66,7 +65,6 @@
             // SbizClientPanel
             // 
             this.SbizClientPanel.Controls.Add(this.SbizClientRunningView);
-            this.SbizClientPanel.Controls.Add(this.SbizClientConnectView);
             this.SbizClientPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SbizClientPanel.Location = new System.Drawing.Point(3, 23);
             this.SbizClientPanel.Name = "SbizClientPanel";
@@ -235,16 +233,6 @@
             this.SbizClientRunningView.Name = "SbizClientRunningView";
             this.SbizClientRunningView.Size = new System.Drawing.Size(441, 176);
             this.SbizClientRunningView.TabIndex = 5;
-            this.SbizClientRunningView.Visible = false;
-            // 
-            // SbizClientConnectView
-            // 
-            this.SbizClientConnectView.AutoSize = true;
-            this.SbizClientConnectView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SbizClientConnectView.Location = new System.Drawing.Point(0, 0);
-            this.SbizClientConnectView.Name = "SbizClientConnectView";
-            this.SbizClientConnectView.Size = new System.Drawing.Size(441, 176);
-            this.SbizClientConnectView.TabIndex = 6;
             // 
             // SbizClientForm
             // 
@@ -288,7 +276,6 @@
         private System.Windows.Forms.StatusStrip SbizClientStatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel SbizClientConnectionStatusLabel;
         private SbizClientRunningUC SbizClientRunningView;
-        private SbizClientConnectUC SbizClientConnectView;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem SbizClientServersToolStripMenuItem;

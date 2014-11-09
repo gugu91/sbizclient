@@ -13,6 +13,10 @@ namespace Sbiz.Client
 {
     public partial class SbizClientForm : Form, SbizControl
     {
+        #region Attributes
+        private string _target_id;
+        #endregion
+
         public SbizClientForm()
         {
             InitializeComponent();
@@ -31,10 +35,7 @@ namespace Sbiz.Client
             {
                 if (args.Status == SbizModelChanged_EventArgs.CONNECTED)
                 {
-                    SbizClientConnectView.Visible = false;
-                    SbizClientConnectView.Enabled = false;
                     SbizClientRunningView.Enabled = true;
-                    SbizClientRunningView.Visible = true;
                     SbizClientRunningView.Focus();//otherwise won't get the input
                     SbizClientConnectionStatusLabel.Text = "Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Green;
@@ -44,31 +45,19 @@ namespace Sbiz.Client
                 }
                 else if(args.Status == SbizModelChanged_EventArgs.NOT_CONNECTED)
                 {
-                    SbizClientRunningView.Visible = false;
                     SbizClientRunningView.Enabled = false;
-                    SbizClientConnectView.Enabled = true;
-                    SbizClientConnectView.Visible = true;
-                    SbizClientConnectView.Focus();
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
                 }
                 else if (args.Status == SbizModelChanged_EventArgs.TRYING)
                 {
-                    SbizClientRunningView.Visible = false;
                     SbizClientRunningView.Enabled = false;
-                    SbizClientConnectView.Enabled = true;
-                    SbizClientConnectView.Visible = true;
-                    SbizClientConnectView.Focus();
                     SbizClientConnectionStatusLabel.Text = "Connecting...";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Orange;
                 }
                 else if(args.Status == SbizModelChanged_EventArgs.ERROR)
                 {
-                    SbizClientRunningView.Visible = false;
                     SbizClientRunningView.Enabled = false;
-                    SbizClientConnectView.Enabled = true;
-                    SbizClientConnectView.Visible = true;
-                    SbizClientConnectView.Focus();
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
                     MessageBox.Show(args.Error_message);
@@ -149,8 +138,12 @@ namespace Sbiz.Client
                         var item = new ToolStripMenuItem();
                         item.Name = element.Key;
                         item.Text = announced[item.Name];
-                        if (element.Value) item.Checked = true;
-                        //Add method to change item;
+                        if (element.Value)
+                        {
+                            item.Checked = true;
+                            _target_id = element.Key;
+                        }
+                        item.Click += ActiveChange;
                         index++;
                         SbizClientServersToolStripMenuItem.DropDownItems.Insert(index, item);
                         cnt++;
@@ -172,9 +165,11 @@ namespace Sbiz.Client
             #endregion
         }
 
+        //TODO test this method
         private void ActiveChange(object sender, EventArgs e)
         {
-            //TODO implement active change
+            ToolStripMenuItem t = (ToolStripMenuItem)sender;
+            SbizClientController.MakeActive(t.Name);
         }
 
         private void Connect(object sender, EventArgs e)
@@ -183,9 +178,10 @@ namespace Sbiz.Client
             SbizClientController.Connect(item.Name);
         }
 
+        //This is actually used to disconnect from target
         private void noActiveConnectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //TODO Disconnect from target
+            SbizClientController.Disconnect();
         }
       
 }

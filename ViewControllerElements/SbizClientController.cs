@@ -105,12 +105,15 @@ namespace Sbiz.Client
             }
             SbizClientMessageSendingModel.Connect(ipaddress, port);
         }
-        public static void Disconnect(string identifier)
+        public static void MakeActive(string id)
+        {
+            SbizClientMessageSendingModel.MakeActive(id);
+        }
+        public static void Disconnect()
         {
             Running = true;
-            //MISSING
+            SbizClientMessageSendingModel.ShutdownConnection();
         }
-
         public static void Stop()
         {
             Running = false;
@@ -131,7 +134,6 @@ namespace Sbiz.Client
         {
             SbizClientMessageSendingModel.SendData(data);
         }
-
         public static void AddAnnouncedServer(object sender, SbizModelChanged_EventArgs args)
         {
             if (args.Status == SbizModelChanged_EventArgs.DISCOVERED_SERVER)
@@ -150,34 +152,6 @@ namespace Sbiz.Client
                     }
                 }
             }
-            /*
-            else if (args.Status == SbizModelChanged_EventArgs.CONNECTED)
-            {
-                string identifier = (string)args.ExtraArg;
-
-                lock (_announced_servers)
-                {
-                    if (_announced_servers.ContainsKey(identifier))
-                    {
-                        _announced_servers[identifier].LastSeen = DateTime.Now;
-                        _announced_servers[identifier].Connected = true;
-                    }
-                }
-            }
-            else if (args.Status == SbizModelChanged_EventArgs.NOT_CONNECTED || args.Status == SbizModelChanged_EventArgs.ERROR)
-            {
-                string identifier = (string)args.ExtraArg;
-
-                lock (_announced_servers)
-                {
-                    if (_announced_servers.ContainsKey(identifier))
-                    {
-                        _announced_servers[identifier].LastSeen = DateTime.Now;
-                        _announced_servers[identifier].Connected = false;
-                    }
-                }
-            }
-             * */
         }
     }
 }
