@@ -39,7 +39,9 @@
             this.SbizClientExitToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.SbizClientServersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SbizClientConnectToNewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noOtherServerOnThisNetworkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.noActiveConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SbizClientMenuView = new System.Windows.Forms.ToolStripMenuItem();
             this.SbizClientToggleFullscreenToolStrip = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,8 +50,6 @@
             this.SbizClientTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.SbizClientStatusStrip = new System.Windows.Forms.StatusStrip();
             this.SbizClientConnectionStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.noOtherServerOnThisNetworkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.SbizClientRunningView = new Sbiz.Client.SbizClientRunningUC();
             this.SbizClientPanel.SuspendLayout();
             this.SbizClientMenuStrip.SuspendLayout();
@@ -132,10 +132,22 @@
             this.SbizClientConnectToNewToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.SbizClientConnectToNewToolStripMenuItem.Text = "Connect to new";
             // 
+            // noOtherServerOnThisNetworkToolStripMenuItem
+            // 
+            this.noOtherServerOnThisNetworkToolStripMenuItem.Enabled = false;
+            this.noOtherServerOnThisNetworkToolStripMenuItem.Name = "noOtherServerOnThisNetworkToolStripMenuItem";
+            this.noOtherServerOnThisNetworkToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.noOtherServerOnThisNetworkToolStripMenuItem.Text = "No other server on this network";
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(184, 6);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(184, 6);
             // 
             // noActiveConnectionToolStripMenuItem
             // 
@@ -211,18 +223,6 @@
             this.SbizClientConnectionStatusLabel.Name = "SbizClientConnectionStatusLabel";
             this.SbizClientConnectionStatusLabel.Size = new System.Drawing.Size(88, 15);
             this.SbizClientConnectionStatusLabel.Text = "Not Connected";
-            // 
-            // noOtherServerOnThisNetworkToolStripMenuItem
-            // 
-            this.noOtherServerOnThisNetworkToolStripMenuItem.Enabled = false;
-            this.noOtherServerOnThisNetworkToolStripMenuItem.Name = "noOtherServerOnThisNetworkToolStripMenuItem";
-            this.noOtherServerOnThisNetworkToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
-            this.noOtherServerOnThisNetworkToolStripMenuItem.Text = "No other server on this network";
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(184, 6);
             // 
             // SbizClientRunningView
             // 

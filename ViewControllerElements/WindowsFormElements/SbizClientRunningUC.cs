@@ -36,6 +36,7 @@ namespace Sbiz.Client
         {
         }
 
+        #region MouseEvents
         private void SbizClientRunningUC_MouseMove(object sender, MouseEventArgs e)
         {
             SbizClientMouseHandler.MouseMove(this, ((Control)sender), e);
@@ -97,6 +98,16 @@ namespace Sbiz.Client
         private void MainPanel_MouseHover(object sender, EventArgs e)
         {
             this.Focus();
+        }
+        #endregion
+        private void SbizClientRunningUC_KeyDown(object sender, KeyEventArgs e)
+        {
+            key_handler.KeyDown(SbizClientRunningTextLabel, e);
+        }
+
+        private void SbizClientRunningUC_KeyUp(object sender, KeyEventArgs e)
+        {
+            key_handler.KeyUp(SbizClientRunningTextLabel, e);
         }
         /*
         #region HorizontalScrolling

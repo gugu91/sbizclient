@@ -69,7 +69,9 @@
             this.Controls.Add(this.MainPanel);
             this.Name = "SbizClientRunningUC";
             this.Size = new System.Drawing.Size(728, 354);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SbizClientRunningUC_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SbizClientRunningUC_KeyPress);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SbizClientRunningUC_KeyUp);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningUC_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningUC_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningUC_MouseUp);
