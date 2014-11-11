@@ -32,22 +32,12 @@ namespace Sbiz.Client
         {
             if (key_handler.ProcessCmdKey(ref msg, keyData))
             {
-                if(msg.Msg == WM_KEYDOWN)
+                if (msg.Msg == WM_KEYDOWN || msg.Msg == WM_SYSKEYDOWN)
                 {
                     this.OnKeyDown(new KeyEventArgs(keyData));
                 }
-                else if(msg.Msg == WM_KEYUP)
-                {
-                    this.OnKeyUp(new KeyEventArgs(keyData));
-                }
-                else if(msg.Msg == WM_SYSKEYDOWN)
-                {
-                    this.OnKeyDown(new KeyEventArgs(keyData));
-                }
-                else if(msg.Msg == WM_SYSKEYUP)
-                {
-                    this.OnKeyUp(new KeyEventArgs(keyData));
-                }
+                //Apparently key up never passes here no idea why
+                //if (msg.Msg == WM_KEYUP || msg.Msg == WM_SYSKEYUP){}
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);

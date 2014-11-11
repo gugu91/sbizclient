@@ -183,7 +183,6 @@ namespace Sbiz.Client
         {
             SbizClientController.Disconnect();
         }
-      
 }
  
 }
