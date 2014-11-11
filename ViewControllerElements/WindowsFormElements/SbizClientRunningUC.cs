@@ -14,6 +14,11 @@ namespace Sbiz.Client
     public partial class SbizClientRunningUC : UserControl, SbizControl
     {
         private SbizClientKeyHandler key_handler;
+        private const int WM_KEYDOWN = 0X100;
+        private const int WM_KEYUP = 0X101;
+        private const int WM_SYSKEYDOWN = 0X104;
+        private const int WM_SYSKEYUP = 0X105;
+
         public SbizClientRunningUC()
         {
             InitializeComponent();
@@ -21,6 +26,31 @@ namespace Sbiz.Client
             //SbizClientController.RegisterView(this);
             key_handler = new SbizClientKeyHandler();
             Focus();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (key_handler.ProcessCmdKey(ref msg, keyData))
+            {
+                if(msg.Msg == WM_KEYDOWN)
+                {
+                    this.OnKeyDown(new KeyEventArgs(keyData));
+                }
+                else if(msg.Msg == WM_KEYUP)
+                {
+                    this.OnKeyUp(new KeyEventArgs(keyData));
+                }
+                else if(msg.Msg == WM_SYSKEYDOWN)
+                {
+                    this.OnKeyDown(new KeyEventArgs(keyData));
+                }
+                else if(msg.Msg == WM_SYSKEYUP)
+                {
+                    this.OnKeyUp(new KeyEventArgs(keyData));
+                }
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void SbizClientRunningUC_KeyPress(object sender, KeyPressEventArgs e)

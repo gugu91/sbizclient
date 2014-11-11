@@ -85,6 +85,19 @@ namespace Sbiz.Client
             }
         }
 
+        public bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            SbizMessage m;
+            switch (keyData)
+            {
+                case Keys.Alt:
+                    return true;
+                case Keys.F10:
+                    return true;          
+            }
+            return false;
+        }
+
         #region Senders
         public void SendKeyUp(Keys key)
         {
