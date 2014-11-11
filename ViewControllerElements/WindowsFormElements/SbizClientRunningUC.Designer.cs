@@ -75,6 +75,7 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningUC_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningUC_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningUC_MouseUp);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.SbizClientRunningUC_PreviewKeyDown);
             this.MainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 

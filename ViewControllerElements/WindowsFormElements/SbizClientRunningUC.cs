@@ -109,6 +109,29 @@ namespace Sbiz.Client
         {
             key_handler.KeyUp(SbizClientRunningTextLabel, e);
         }
+
+        private void SbizClientRunningUC_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Down:
+                    this.SbizClientRunningTextLabel.Text = "\u2193"; //Unicode for ↓
+                    e.IsInputKey = true;
+                    break;
+                case Keys.Up:
+                    this.SbizClientRunningTextLabel.Text = "\u2191"; //Unicode for ↑
+                    e.IsInputKey = true;
+                    break;
+                case Keys.Left:
+                    this.SbizClientRunningTextLabel.Text = "\u2190"; //Unicode for ←
+                    e.IsInputKey = true;
+                    break;
+                case Keys.Right:
+                    this.SbizClientRunningTextLabel.Text = "\u2192"; //Unicode for →
+                    e.IsInputKey = true;
+                    break;
+            }
+        }
         /*
         #region HorizontalScrolling
         protected override void WndProc(ref Message m)
