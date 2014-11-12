@@ -8,57 +8,103 @@ using Sbiz.Library;
 
 namespace Sbiz.Client
 {
-    class SbizClientKeyHandler
+    static class SbizClientKeyHandler
     {
-        private int new_word;
-        private bool _shift_down = false;
-        private bool _control_down = false;
-        private bool _alt_down = false;
-
-        public SbizClientKeyHandler()
+        private static int new_word = -1;
+        private static bool _shift_down = false;
+        private static bool _control_down = false;
+        private static bool _alt_down = false;
+        private static Label _text_label;
+        public static void RegisterLabel(Label l)
         {
-            new_word = -1;
+            _text_label = l;
         }
-        #region ViewUpdating
-        public void KeyPress(Label text_label, KeyPressEventArgs e)
+        public static void UnregisterLabel()
         {
+            _text_label = null;
+        }
+
+        private static HandleSpecialKeys _del = SpecialKeysHandlerMethod;
+
+        public static HandleSpecialKeys SpecialKeysHandler
+        {
+            get
+            {
+                if (_del == null)
+                {
+                    _del = SpecialKeysHandlerMethod;
+                }
+                return _del;    
+            }
+        }
+
+        private static void SpecialKeysHandlerMethod(KeyEventArgs e, int up_or_down)
+        {
+            if (_text_label != null)
+            {
+                if (up_or_down == NativeImport.WM_SYSKEYDOWN ||
+                    up_or_down == NativeImport.WM_KEYDOWN)
+                {
+                    KeyDown(e);
+                }
+                if (up_or_down == NativeImport.WM_SYSKEYUP ||
+                    up_or_down == NativeImport.WM_KEYUP)
+                {
+                    KeyUp(e);
+                }
+            }
+        }
+
+        public static void ResetServerKeyboard()
+        {
+            foreach (var key in (Keys[]) Enum.GetValues(typeof(Keys)))
+            {
+                SendKeyUp(key);
+            }
+        }
+
+        #region ViewUpdating
+        public static void KeyPress(KeyPressEventArgs e)
+        {
+            if (_text_label == null) return;
+
             var c = e.KeyChar;
             if (char.IsSeparator(c))
             {
                 new_word--;
-                text_label.Text += c.ToString();
+                _text_label.Text += c.ToString();
             }
             else if (c == '\u000D') //unicode for carriage return
             {
-                text_label.Text = c.ToString();
+                _text_label.Text = c.ToString();
                 new_word = 2;
             }
             else if (char.IsControl(c)) 
             {
                 if (c == '\u0008') //unicode for backspace
                 {
-                    if (text_label.Text.Length > 0) text_label.Text = text_label.Text.Substring(0, text_label.Text.Length - 1);
+                    if (_text_label.Text.Length > 0) _text_label.Text = _text_label.Text.Substring(0, _text_label.Text.Length - 1);
                 }
                 else if (c == '\u007f') //unicode for delete
                 {
-                    text_label.Text = "{canc}";
+                    _text_label.Text = "{canc}";
                 }
             }
             else
             {
                 if (new_word < 0)
                 {
-                    text_label.Text = c.ToString();
+                    _text_label.Text = c.ToString();
                     new_word = 2;
                 }
                 else
                 {
-                    text_label.Text += c.ToString();
+                    _text_label.Text += c.ToString();
                 }
             }
         }
         #endregion
-        public void KeyDown(Label text_label, KeyEventArgs e)
+        public static  void KeyDown(KeyEventArgs e)
         {
             if (IsSbizKey(e))
             {
@@ -69,31 +115,31 @@ namespace Sbiz.Client
                 if (e.Shift && !_shift_down)
                 {
                     _shift_down = true;
-                    SendKeyDown(Keys.Shift);
+                    //SendKeyDown(Keys.Shift);
                 }
                 if (e.Control && !_control_down)
                 {
                     _control_down = true;
-                    SendKeyDown(Keys.Control);
+                    //SendKeyDown(Keys.Control);
                 }
                 if (e.Alt && !_alt_down)
                 {
                     _alt_down = true;
-                    SendKeyDown(Keys.Control);
+                    //SendKeyDown(Keys.Control);
                 }
                 if (e.KeyCode == Keys.Menu) SendKeyDown(Keys.LMenu);
                 else SendKeyDown(e.KeyCode);
             }
         }
 
-        public void KeyUp(Label text_label, KeyEventArgs e)
+        public static void KeyUp(KeyEventArgs e)
         {
             if (IsSbizKey(e))
             {
                 //text_label.Text = "SbizKey Pressed";
             }  
             else
-            {
+            {/*
                 if (!e.Shift && _shift_down)
                 {
                     _shift_down = false;
@@ -108,7 +154,7 @@ namespace Sbiz.Client
                 {
                     _alt_down = false;
                     SendKeyUp(Keys.Alt);
-                }
+                }*/
                 if (e.KeyCode == Keys.Menu)
                 {
                     SendKeyUp(Keys.LMenu);
@@ -117,30 +163,22 @@ namespace Sbiz.Client
             }
         }
 
-        public bool ProcessCmdKey(ref Message msg, Keys keyData)
+        public static bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            //switch (keyData)
-            //{
-            //    case Keys.Alt:
-            //        return true;
-            //    case Keys.F10:
-            //        return true;          
-            //}
-
             if (IsLeftAlt(keyData)) return true;
             if (keyData == Keys.F10) return true;
             return false;
         }
 
         #region Senders
-        public void SendKeyUp(Keys key)
+        public static void SendKeyUp(Keys key)
         {
             byte[] data = new byte[0];
             data = SbizNetUtils.EncapsulateInt16inByteArray(data, (Int16)key);//key are int16
             SbizMessage m = new SbizMessage(SbizMessageConst.KEY_UP, data);
             SbizClientController.ModelSetData(m.ToByteArray());
         }
-        public void SendKeyDown(Keys key)
+        public static void SendKeyDown(Keys key)
         {
             byte[] data = new byte[0];
             data = SbizNetUtils.EncapsulateInt16inByteArray(data, (Int16)key);

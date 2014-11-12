@@ -248,6 +248,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SbizClient";
             this.TopMost = true;
+            this.Activated += new System.EventHandler(this.SbizClientForm_Activated);
+            this.Deactivate += new System.EventHandler(this.SbizClientForm_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SbizClientFormClosing);
             this.SbizClientPanel.ResumeLayout(false);
             this.SbizClientPanel.PerformLayout();

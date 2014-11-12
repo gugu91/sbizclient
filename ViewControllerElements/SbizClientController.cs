@@ -107,15 +107,18 @@ namespace Sbiz.Client
         }
         public static void MakeActive(string id)
         {
+            SbizClientKeyHandler.ResetServerKeyboard();
             SbizClientMessageSendingModel.MakeActive(id);
         }
         public static void Disconnect()
         {
+            SbizClientKeyHandler.ResetServerKeyboard(); 
             Running = true;
             SbizClientMessageSendingModel.ShutdownConnection();
         }
         public static void Stop()
         {
+            SbizClientKeyHandler.ResetServerKeyboard();
             Running = false;
             SbizClientMessageSendingModel.Stop();
             SbizClientAnnounceReceivingModel.Stop();

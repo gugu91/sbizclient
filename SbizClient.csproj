@@ -69,6 +69,8 @@
     <Compile Include="ModelElements\SbizClientAnnounceReceivingModel.cs" />
     <Compile Include="ModelElements\SbizMessageSender.cs" />
     <Compile Include="ModelElements\SbizAnnouncerInfo.cs" />
+    <Compile Include="ViewControllerElements\SbizClipboardHandler.cs" />
+    <Compile Include="ViewControllerElements\NativeImport.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewControllerElements\SbizClientMouseHandler.cs" />
     <Compile Include="ViewControllerElements\SbizClientController.cs" />

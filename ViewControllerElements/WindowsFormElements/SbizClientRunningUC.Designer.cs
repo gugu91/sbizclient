@@ -57,6 +57,7 @@
             this.SbizClientRunningTextLabel.Text = "Welcome!";
             this.SbizClientRunningTextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.SbizClientRunningTextLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningTextLabel_MouseDown);
+            this.SbizClientRunningTextLabel.MouseLeave += new System.EventHandler(this.SbizClientRunningTextLabel_MouseLeave);
             this.SbizClientRunningTextLabel.MouseHover += new System.EventHandler(this.SbizClientRunningTextLabel_MouseHover);
             this.SbizClientRunningTextLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningTextLabel_MouseMove);
             this.SbizClientRunningTextLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SbizClientRunningTextLabel_MouseUp);
@@ -69,6 +70,7 @@
             this.Controls.Add(this.MainPanel);
             this.Name = "SbizClientRunningUC";
             this.Size = new System.Drawing.Size(728, 354);
+            this.EnabledChanged += new System.EventHandler(this.SbizClientRunningUC_EnabledChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SbizClientRunningUC_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SbizClientRunningUC_KeyPress);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SbizClientRunningUC_KeyUp);

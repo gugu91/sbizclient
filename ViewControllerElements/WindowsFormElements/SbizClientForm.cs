@@ -21,6 +21,7 @@ namespace Sbiz.Client
         {
             InitializeComponent();
             SbizClientController.RegisterView(this);
+            NativeImport.AddClipboardFormatListener(this.SbizClientRunningView.Handle);
             SbizClientController.Start();
         }
 
@@ -40,7 +41,7 @@ namespace Sbiz.Client
                     SbizClientConnectionStatusLabel.Text = "Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Green;
                     SbizClientToggleFullscreenToolStrip.Enabled = true;
-                    FormBorderStyle = FormBorderStyle.None;
+                    //FormBorderStyle = FormBorderStyle.None;
                     //WindowState = FormWindowState.Maximized;
                 }
                 else if(args.Status == SbizModelChanged_EventArgs.NOT_CONNECTED)
@@ -96,6 +97,7 @@ namespace Sbiz.Client
         private void SbizClientCleanup()
         {
             SbizClientController.Stop();
+            NativeImport.RemoveClipboardFormatListener(this.SbizClientRunningView.Handle);
         }
 
         private void SbizClientServersToolStripMenuItem_Paint(object sender, PaintEventArgs e)
@@ -182,6 +184,18 @@ namespace Sbiz.Client
         private void noActiveConnectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SbizClientController.Disconnect();
+        }
+
+        private void SbizClientForm_Deactivate(object sender, EventArgs e)
+        {
+            SbizClientKeyHandler.ResetServerKeyboard();
+            WindowState = FormWindowState.Minimized;
+            NativeImport.UnhookSpecialKeys();
+        }
+
+        private void SbizClientForm_Activated(object sender, EventArgs e)
+        {
+            NativeImport.HookSpecialKeys(SbizClientKeyHandler.SpecialKeysHandler);
         }
 }
  

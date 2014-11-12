@@ -13,26 +13,20 @@ namespace Sbiz.Client
 {
     public partial class SbizClientRunningUC : UserControl, SbizControl
     {
-        private SbizClientKeyHandler key_handler;
-        private const int WM_KEYDOWN = 0X100;
-        private const int WM_KEYUP = 0X101;
-        private const int WM_SYSKEYDOWN = 0X104;
-        private const int WM_SYSKEYUP = 0X105;
-
         public SbizClientRunningUC()
         {
             InitializeComponent();
             this.MouseWheel += SbizClientRunningUC_MouseWheel;
             //SbizClientController.RegisterView(this);
-            key_handler = new SbizClientKeyHandler();
             Focus();
         }
 
+        #region Overrides
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (key_handler.ProcessCmdKey(ref msg, keyData))
+            if (SbizClientKeyHandler.ProcessCmdKey(ref msg, keyData))
             {
-                if (msg.Msg == WM_KEYDOWN || msg.Msg == WM_SYSKEYDOWN)
+                if (msg.Msg == NativeImport.WM_KEYDOWN || msg.Msg == NativeImport.WM_SYSKEYDOWN)
                 {
                     this.OnKeyDown(new KeyEventArgs(keyData));
                 }
@@ -42,12 +36,18 @@ namespace Sbiz.Client
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
-        private void SbizClientRunningUC_KeyPress(object sender, KeyPressEventArgs e)
+        protected override void WndProc(ref Message m)
         {
-            key_handler.KeyPress(SbizClientRunningTextLabel, e);
-        }
+            base.WndProc(ref m);
 
+            if (m.Msg == NativeImport.WM_CLIPBOARDUPDATE) //Handling clipboard data
+            {
+                SbizClipboardHandler.HandleClipboardData(SbizClientRunningTextLabel, Clipboard.GetDataObject());// Clipboard's data.
+            }
+        }
+        #endregion
+
+        #region Update View
         public void UpdateViewOnModelChanged(object sender, SbizModelChanged_EventArgs args)
         {
             BeginInvoke(new SbizUpdateView_Delegate(UpdateView), new object[] { sender, args });
@@ -55,8 +55,10 @@ namespace Sbiz.Client
         public void UpdateView(object sender, SbizModelChanged_EventArgs args)
         {
         }
+        #endregion
 
         #region MouseEvents
+        #region Mouse Move
         private void SbizClientRunningUC_MouseMove(object sender, MouseEventArgs e)
         {
             SbizClientMouseHandler.MouseMove(this, ((Control)sender), e);
@@ -64,9 +66,6 @@ namespace Sbiz.Client
 
         private void SbizClientRunningTextLabel_MouseMove(object sender, MouseEventArgs e)
         {
-            /*System.Drawing.Point np = this.PointToClient(((Control)sender).PointToScreen(e.Location));
-            MouseEventArgs ne = new MouseEventArgs(e.Button, e.Clicks, np.X, np.Y, e.Delta);
-            this.OnMouseMove(ne);*/
             SbizClientMouseHandler.MouseMove(this, ((Control)sender), e);
         }
 
@@ -74,7 +73,9 @@ namespace Sbiz.Client
         {
             SbizClientMouseHandler.MouseMove(this, ((Control)sender), e);
         }
+        #endregion
 
+        #region Mouse Up
         private void SbizClientRunningTextLabel_MouseUp(object sender, MouseEventArgs e)
         {
             SbizClientMouseHandler.MouseUp(this, (Control)sender, e);
@@ -89,12 +90,14 @@ namespace Sbiz.Client
         {
             SbizClientMouseHandler.MouseUp(this, (Control)sender, e);
         }
+        #endregion
 
         private void SbizClientRunningUC_MouseWheel(object sender, MouseEventArgs e)
         {
             SbizClientMouseHandler.MouseWheel(this, (Control)sender, e);
         }
 
+        #region Mouse Down
         private void SbizClientRunningTextLabel_MouseDown(object sender, MouseEventArgs e)
         {
             SbizClientMouseHandler.MouseDown(this, (Control)sender, e);
@@ -110,26 +113,33 @@ namespace Sbiz.Client
             SbizClientMouseHandler.MouseDown(this, (Control)sender, e);
         }
 
+        #endregion
+
+        #region Mouse Hover
         private void SbizClientRunningTextLabel_MouseHover(object sender, EventArgs e)
         {
             this.Focus();
         }
-
         private void MainPanel_MouseHover(object sender, EventArgs e)
         {
             this.Focus();
         }
         #endregion
+        private void SbizClientRunningTextLabel_MouseLeave(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+        #region Keyboard Events
         private void SbizClientRunningUC_KeyDown(object sender, KeyEventArgs e)
         {
-            key_handler.KeyDown(SbizClientRunningTextLabel, e);
+            SbizClientKeyHandler.KeyDown(e);
         }
-
         private void SbizClientRunningUC_KeyUp(object sender, KeyEventArgs e)
         {
-            key_handler.KeyUp(SbizClientRunningTextLabel, e);
+            SbizClientKeyHandler.KeyUp(e);
         }
-
         private void SbizClientRunningUC_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             switch (e.KeyCode)
@@ -152,18 +162,38 @@ namespace Sbiz.Client
                     break;
             }
         }
-        /*
-        #region HorizontalScrolling
-        protected override void WndProc(ref Message m)
+        private void SbizClientRunningUC_KeyPress(object sender, KeyPressEventArgs e)
         {
-            base.WndProc(ref m);
-            if (m.HWnd != this.Handle)
-            {
-                return;
-            }
-            SbizClientRunningTextLabel.Text = m.Msg.ToString("X") +" " + m.GetHashCode();
+            SbizClientKeyHandler.KeyPress(e);
         }
         #endregion
-         * */
+
+        private void SbizClientRunningUC_EnabledChanged(object sender, EventArgs e)
+        {
+            if (((SbizClientRunningUC)sender).Enabled)
+            {
+                SbizClientKeyHandler.RegisterLabel(SbizClientRunningTextLabel);
+            }
+            else
+            {
+                SbizClientKeyHandler.UnregisterLabel();
+            }
+        }
+
+        //Following are not implemented
+
+        #region HorizontalScrolling
+        //protected override void WndProc(ref Message m)
+        //{
+        //    base.WndProc(ref m);
+        //    if (m.HWnd != this.Handle)
+        //    {
+        //        return;
+        //    }
+        //    SbizClientRunningTextLabel.Text = m.Msg.ToString("X") +" " + m.GetHashCode();
+        //}
+        #endregion
+
+
     }
 }

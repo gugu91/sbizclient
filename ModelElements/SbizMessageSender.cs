@@ -149,6 +149,7 @@ namespace Sbiz.Client
         {
             if (Connected)
             {
+                s_conn.Shutdown(SocketShutdown.Both);
                 s_conn.Close();
 
                 Connected = false;
