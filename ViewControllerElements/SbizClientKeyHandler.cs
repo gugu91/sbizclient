@@ -8,13 +8,17 @@ using Sbiz.Library;
 
 namespace Sbiz.Client
 {
-    static class SbizClientKeyHandler
+    static class SbizClientKeyHandler //TODO Add Keyboard shortcuts
     {
+        #region Attributes
         private static int new_word = -1;
         private static bool _shift_down = false;
         private static bool _control_down = false;
         private static bool _alt_down = false;
         private static Label _text_label;
+        #endregion
+
+        #region View Updating Methods
         public static void RegisterLabel(Label l)
         {
             _text_label = l;
@@ -23,47 +27,6 @@ namespace Sbiz.Client
         {
             _text_label = null;
         }
-
-        private static HandleSpecialKeys _del = SpecialKeysHandlerMethod;
-
-        public static HandleSpecialKeys SpecialKeysHandler
-        {
-            get
-            {
-                if (_del == null)
-                {
-                    _del = SpecialKeysHandlerMethod;
-                }
-                return _del;    
-            }
-        }
-
-        private static void SpecialKeysHandlerMethod(KeyEventArgs e, int up_or_down)
-        {
-            if (_text_label != null)
-            {
-                if (up_or_down == NativeImport.WM_SYSKEYDOWN ||
-                    up_or_down == NativeImport.WM_KEYDOWN)
-                {
-                    KeyDown(e);
-                }
-                if (up_or_down == NativeImport.WM_SYSKEYUP ||
-                    up_or_down == NativeImport.WM_KEYUP)
-                {
-                    KeyUp(e);
-                }
-            }
-        }
-
-        public static void ResetServerKeyboard()
-        {
-            foreach (var key in (Keys[]) Enum.GetValues(typeof(Keys)))
-            {
-                SendKeyUp(key);
-            }
-        }
-
-        #region ViewUpdating
         public static void KeyPress(KeyPressEventArgs e)
         {
             if (_text_label == null) return;
@@ -79,7 +42,7 @@ namespace Sbiz.Client
                 _text_label.Text = c.ToString();
                 new_word = 2;
             }
-            else if (char.IsControl(c)) 
+            else if (char.IsControl(c))
             {
                 if (c == '\u0008') //unicode for backspace
                 {
@@ -104,6 +67,51 @@ namespace Sbiz.Client
             }
         }
         #endregion
+
+        #region Special Keys (Alt, Alt+Tab, Etc)
+        private static HandleSpecialKeys _del = SpecialKeysHandlerMethod;
+        public static HandleSpecialKeys SpecialKeysHandler
+        {
+            get
+            {
+                if (_del == null)
+                {
+                    _del = SpecialKeysHandlerMethod;
+                }
+                return _del;    
+            }
+        }
+        private static void SpecialKeysHandlerMethod(KeyEventArgs e, int up_or_down)
+        {
+            if (_text_label != null)
+            {
+                if (up_or_down == NativeImport.WM_SYSKEYDOWN ||
+                    up_or_down == NativeImport.WM_KEYDOWN)
+                {
+                    KeyDown(e);
+                }
+                if (up_or_down == NativeImport.WM_SYSKEYUP ||
+                    up_or_down == NativeImport.WM_KEYUP)
+                {
+                    KeyUp(e);
+                }
+            }
+        }
+        public static bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (IsLeftAlt(keyData)) return true;
+            if (keyData == Keys.F10) return true;
+            return false;
+        }
+        #endregion
+
+        public static void ResetServerKeyboard()
+        {
+            foreach (var key in (Keys[]) Enum.GetValues(typeof(Keys)))
+            {
+                SendKeyUp(key);
+            }
+        }
         public static  void KeyDown(KeyEventArgs e)
         {
             if (IsSbizKey(e))
@@ -112,26 +120,10 @@ namespace Sbiz.Client
             }
             else
             {
-                if (e.Shift && !_shift_down)
-                {
-                    _shift_down = true;
-                    //SendKeyDown(Keys.Shift);
-                }
-                if (e.Control && !_control_down)
-                {
-                    _control_down = true;
-                    //SendKeyDown(Keys.Control);
-                }
-                if (e.Alt && !_alt_down)
-                {
-                    _alt_down = true;
-                    //SendKeyDown(Keys.Control);
-                }
                 if (e.KeyCode == Keys.Menu) SendKeyDown(Keys.LMenu);
                 else SendKeyDown(e.KeyCode);
             }
         }
-
         public static void KeyUp(KeyEventArgs e)
         {
             if (IsSbizKey(e))
@@ -139,35 +131,13 @@ namespace Sbiz.Client
                 //text_label.Text = "SbizKey Pressed";
             }  
             else
-            {/*
-                if (!e.Shift && _shift_down)
-                {
-                    _shift_down = false;
-                    SendKeyUp(Keys.Shift);
-                }
-                if (!e.Control && _control_down)
-                {
-                    _control_down = false;
-                    SendKeyUp(Keys.Control);
-                }
-                if (!e.Alt && _alt_down)
-                {
-                    _alt_down = false;
-                    SendKeyUp(Keys.Alt);
-                }*/
+            {
                 if (e.KeyCode == Keys.Menu)
                 {
                     SendKeyUp(Keys.LMenu);
                 }
                 else SendKeyUp(e.KeyCode);
             }
-        }
-
-        public static bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            if (IsLeftAlt(keyData)) return true;
-            if (keyData == Keys.F10) return true;
-            return false;
         }
 
         #region Senders
