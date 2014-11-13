@@ -48,7 +48,9 @@ namespace Sbiz.Client
         #region StaticMethods
         public static void MakeActive(string id)
         {
+            SendMessage(new SbizMessage(SbizMessageConst.NOT_TARGET, new byte[0]));
             if (_connected_sms.ContainsKey(id)) _active_sms = _connected_sms[id];
+            SendMessage(new SbizMessage(SbizMessageConst.TARGET, new byte[0]));
         }
         public static void Connect(System.Net.IPAddress ipaddress, int port, IntPtr view_handle)
         {
@@ -64,7 +66,7 @@ namespace Sbiz.Client
             {
                 _active_sms = _connected_sms[tmp_scs.Identifier];
             }
-                
+            SendMessage(new SbizMessage(SbizMessageConst.TARGET, new byte[0]));
         }
         public static void SendData(byte[] m)
         {
@@ -84,7 +86,11 @@ namespace Sbiz.Client
         }
         public static void ShutdownConnection()
         {
-            if (_active_sms != null) _active_sms.ShutdownConnectionWithServer(SbizClientController.OnModelChanged);
+            if (_active_sms != null)
+            {
+                SendMessage(new SbizMessage(SbizMessageConst.NOT_TARGET, new byte[0]));
+                _active_sms.ShutdownConnectionWithServer(SbizClientController.OnModelChanged);
+            }
             //Removed from the collection by the remove disconnected delegate
         }
         public static void RemoveDisconnected(object sender, SbizModelChanged_EventArgs ea)
