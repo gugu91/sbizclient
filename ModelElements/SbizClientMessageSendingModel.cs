@@ -48,12 +48,13 @@ namespace Sbiz.Client
         #region StaticMethods
         public static void MakeActive(string id)
         {
-            SendMessage(new SbizMessage(SbizMessageConst.NOT_TARGET, new byte[0]));
+            SendData(SbizMessage.NotTargetToByteArray());
             if (_connected_sms.ContainsKey(id)) _active_sms = _connected_sms[id];
-            SendMessage(new SbizMessage(SbizMessageConst.TARGET, new byte[0]));
+            SendData(SbizMessage.TargetToByteArray());
         }
         public static void Connect(System.Net.IPAddress ipaddress, int port, IntPtr view_handle)
         {
+            SendData(SbizMessage.NotTargetToByteArray());
             SbizMessager tmp_scs = new SbizMessager(ipaddress, port);
 
             if (!_connected_sms.ContainsKey(tmp_scs.Identifier))
@@ -66,7 +67,6 @@ namespace Sbiz.Client
             {
                 _active_sms = _connected_sms[tmp_scs.Identifier];
             }
-            SendMessage(new SbizMessage(SbizMessageConst.TARGET, new byte[0]));
         }
         public static void SendData(byte[] m)
         {
@@ -88,7 +88,6 @@ namespace Sbiz.Client
         {
             if (_active_sms != null)
             {
-                SendMessage(new SbizMessage(SbizMessageConst.NOT_TARGET, new byte[0]));
                 _active_sms.ShutdownConnectionWithServer(SbizClientController.OnModelChanged);
             }
             //Removed from the collection by the remove disconnected delegate
@@ -101,7 +100,7 @@ namespace Sbiz.Client
                 lock (_connected_sms)
                 {
                     _connected_sms.Remove(id);
-                    if (_active_sms.Identifier == id) _active_sms = null;
+                    if (_active_sms != null && _active_sms.Identifier == id) _active_sms = null;
                 }
             }
         }
