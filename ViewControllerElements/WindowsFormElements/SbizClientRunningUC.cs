@@ -40,10 +40,7 @@ namespace Sbiz.Client
         {
             base.WndProc(ref m);
 
-            if (m.Msg == NativeImport.WM_CLIPBOARDUPDATE) //Handling clipboard data
-            {
-                SbizClipboardHandler.HandleClipboardData(SbizClientRunningTextLabel, Clipboard.GetDataObject());// Clipboard's data.
-            }
+            SbizClientController.WndProcOverride(m);
         }
         #endregion
 

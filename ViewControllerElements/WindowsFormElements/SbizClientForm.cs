@@ -21,8 +21,7 @@ namespace Sbiz.Client
         {
             InitializeComponent();
             SbizClientController.RegisterView(this);
-            NativeImport.AddClipboardFormatListener(this.SbizClientRunningView.Handle);
-            SbizClientController.Start();
+            SbizClientController.Start(this.SbizClientRunningView.Handle);
         }
 
         public void UpdateViewOnModelChanged(object sender, SbizModelChanged_EventArgs args)

@@ -50,6 +50,31 @@ namespace Sbiz.Client
         }
         #endregion
 
+        #region SniffingClipboardRegion
+        private static int _sniffing_clipboard; //NB never refer to this object as it is not thread safe
+        private static bool SniffingClipboard
+        {
+            get
+            {
+                if (_sniffing_clipboard == YES) return true;
+                else return false;
+            }
+            set
+            {
+                if (value)
+                {
+                    System.Threading.Interlocked.Exchange(ref _sniffing_clipboard, YES);
+                }
+                else
+                {
+                    System.Threading.Interlocked.Exchange(ref _sniffing_clipboard, NO);
+                }
+            }
+        }
+        #endregion
+
+        private static IntPtr _clipboard_listener_control_handle;
+
         private static Dictionary<string, SbizAnnouncerInfo> _announced_servers = new Dictionary<string, SbizAnnouncerInfo>();
         public static Dictionary<string, string> AnnouncedServers
         {
@@ -78,11 +103,13 @@ namespace Sbiz.Client
                 return ret_map;
             }
         }
-        public static void Start()
+        public static void Start(IntPtr clipboard_listener_control_handle)
         {
             Running = true;
             ModelChanged += AddAnnouncedServer;
             ModelChanged += SbizClientMessageSendingModel.RemoveDisconnected;
+            _clipboard_listener_control_handle = clipboard_listener_control_handle;
+            NativeImport.AddClipboardFormatListener(_clipboard_listener_control_handle);
             SbizClientAnnounceReceivingModel.Start(15001);//TODO add configuration for port
         }
         public static void Connect(System.Net.IPAddress ipaddress, int port)
@@ -119,6 +146,7 @@ namespace Sbiz.Client
         public static void Stop()
         {
             SbizClientKeyHandler.ResetServerKeyboard();
+            if(Running) NativeImport.RemoveClipboardFormatListener(_clipboard_listener_control_handle);
             Running = false;
             SbizClientMessageSendingModel.Stop();
             SbizClientAnnounceReceivingModel.Stop();
@@ -137,6 +165,10 @@ namespace Sbiz.Client
         {
             SbizClientMessageSendingModel.SendData(data);
         }
+        public static void ModelSetData(SbizMessage m)
+        {
+            SbizClientMessageSendingModel.SendMessage(m);
+        }
         public static void AddAnnouncedServer(object sender, SbizModelChanged_EventArgs args)
         {
             if (args.Status == SbizModelChanged_EventArgs.DISCOVERED_SERVER)
@@ -154,6 +186,14 @@ namespace Sbiz.Client
                         _announced_servers.Add(serv.Identifier, serv);
                     }
                 }
+            }
+        }
+
+        public static void WndProcOverride(System.Windows.Forms.Message m)
+        {
+            if (m.Msg == NativeImport.WM_CLIPBOARDUPDATE) //Handling clipboard data
+            {
+                SbizClipboardHandler.SendClipboardData(System.Windows.Forms.Clipboard.GetDataObject());// Clipboard's data.
             }
         }
     }

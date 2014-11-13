@@ -145,15 +145,13 @@ namespace Sbiz.Client
         {
             byte[] data = new byte[0];
             data = SbizNetUtils.EncapsulateInt16inByteArray(data, (Int16)key);//key are int16
-            SbizMessage m = new SbizMessage(SbizMessageConst.KEY_UP, data);
-            SbizClientController.ModelSetData(m.ToByteArray());
+            SbizClientController.ModelSetData(new SbizMessage(SbizMessageConst.KEY_UP, data));
         }
         public static void SendKeyDown(Keys key)
         {
             byte[] data = new byte[0];
             data = SbizNetUtils.EncapsulateInt16inByteArray(data, (Int16)key);
-            SbizMessage m = new SbizMessage(SbizMessageConst.KEY_DOWN, data);
-            SbizClientController.ModelSetData(m.ToByteArray());
+            SbizClientController.ModelSetData(new SbizMessage(SbizMessageConst.KEY_DOWN, data));
         }
         #endregion
 

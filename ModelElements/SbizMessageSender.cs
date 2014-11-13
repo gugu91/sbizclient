@@ -55,8 +55,6 @@ namespace Sbiz.Client
             _tcp_port = tcp_port;
             Connected = false;
         }
-
-
         public void Connect()
         {
             IPEndPoint ipe = new IPEndPoint(_ip_add, _tcp_port);
@@ -74,7 +72,6 @@ namespace Sbiz.Client
                     "There is no server listening on this port", this.Identifier));
             }
         }
-
         public void ConnectCallback(IAsyncResult ar)
         {
             try
@@ -83,6 +80,7 @@ namespace Sbiz.Client
                 s.EndConnect(ar);
                 s.NoDelay = true;
                 Connected = true;
+                SbizClipboardHandler.RegisterSbizMessageSendingDelegate(this.SendMessage);//Start Sniffing the clipboard
                 SbizClientController.OnModelChanged(this, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED,
                     "Connected to server", this.Identifier));
             }
@@ -98,7 +96,6 @@ namespace Sbiz.Client
                 //User shutdown connection, do nothing
             }
         }
-
         public void SendData(byte[] data)
         {
             try
@@ -120,7 +117,10 @@ namespace Sbiz.Client
                 }
             }
         }
-        
+        public void SendMessage(SbizMessage m)
+        {
+            SendData(m.ToByteArray());
+        }
         private void SendCallback(IAsyncResult ar)
         {
             if (Connected)
@@ -144,11 +144,11 @@ namespace Sbiz.Client
                 }
             }
         }
-
         public void ShutdownConnection()
         {
             if (Connected)
             {
+                SbizClipboardHandler.UnregisterSbizMessageSendingDelegate(this.SendMessage);
                 s_conn.Shutdown(SocketShutdown.Both);
                 s_conn.Close();
 

@@ -34,8 +34,7 @@ namespace Sbiz.Client
         {
             System.Drawing.Point p = uc.PointToClient(sender.PointToScreen(e.Location));
             SbizMouseEventArgs smea = new SbizMouseEventArgs(e.Button, e.Clicks, e.Delta/SystemInformation.MouseWheelScrollDelta, p.X, p.Y, uc.Bounds.Width, uc.Bounds.Height);
-            SbizMessage m = new SbizMessage(type , smea.ToByteArray());
-            SbizClientController.ModelSetData(m.ToByteArray());
+            SbizClientController.ModelSetData(new SbizMessage(type, smea.ToByteArray()));
         }
     }
 }

@@ -69,7 +69,12 @@ namespace Sbiz.Client
         public static void SendData(byte[] m)
         {
             if (_active_sms != null) _active_sms.SendData(m);
-        }     
+        }
+
+        public static void SendMessage(SbizMessage m)
+        {
+            SendData(m.ToByteArray());
+        }
         public static void Stop()
         {
             List<SbizMessageSender> l;
