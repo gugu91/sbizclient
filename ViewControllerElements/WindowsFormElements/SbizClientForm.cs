@@ -31,7 +31,7 @@ namespace Sbiz.Client
 
         public void UpdateView(object sender, SbizModelChanged_EventArgs args)
         {
-            if (sender is SbizMessageSender)
+            if (sender is SbizMessager)
             {
                 if (args.Status == SbizModelChanged_EventArgs.CONNECTED)
                 {
@@ -176,7 +176,7 @@ namespace Sbiz.Client
         private void Connect(object sender, EventArgs e)
         {
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
-            SbizClientController.Connect(item.Name);
+            SbizClientController.Connect(item.Name, this.SbizClientRunningView.Handle);
         }
 
         //This is actually used to disconnect from target

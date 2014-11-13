@@ -81,19 +81,19 @@ namespace Sbiz.Client
                 return _del;    
             }
         }
-        private static void SpecialKeysHandlerMethod(KeyEventArgs e, int up_or_down)
+        private static void SpecialKeysHandlerMethod(KeyEventArgs e, int up_or_down, IntPtr view_handle)
         {
             if (_text_label != null)
             {
                 if (up_or_down == NativeImport.WM_SYSKEYDOWN ||
                     up_or_down == NativeImport.WM_KEYDOWN)
                 {
-                    KeyDown(e);
+                    KeyDown(e, view_handle);
                 }
                 if (up_or_down == NativeImport.WM_SYSKEYUP ||
                     up_or_down == NativeImport.WM_KEYUP)
                 {
-                    KeyUp(e);
+                    KeyUp(e, view_handle);
                 }
             }
         }
@@ -112,7 +112,7 @@ namespace Sbiz.Client
                 SendKeyUp(key);
             }
         }
-        public static  void KeyDown(KeyEventArgs e)
+        public static void KeyDown(KeyEventArgs e, IntPtr view_handle)
         {
             if (IsSbizKey(e))
             {
@@ -124,7 +124,7 @@ namespace Sbiz.Client
                 else SendKeyDown(e.KeyCode);
             }
         }
-        public static void KeyUp(KeyEventArgs e)
+        public static void KeyUp(KeyEventArgs e, IntPtr view_handle)
         {
             if (IsSbizKey(e))
             {

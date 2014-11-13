@@ -40,7 +40,7 @@ namespace Sbiz.Client
         {
             base.WndProc(ref m);
 
-            SbizClientController.WndProcOverride(m);
+            SbizClientController.WndProcOverride(m, this.Handle);
         }
         #endregion
 
@@ -131,11 +131,11 @@ namespace Sbiz.Client
         #region Keyboard Events
         private void SbizClientRunningUC_KeyDown(object sender, KeyEventArgs e)
         {
-            SbizClientKeyHandler.KeyDown(e);
+            SbizClientKeyHandler.KeyDown(e, this.Handle);
         }
         private void SbizClientRunningUC_KeyUp(object sender, KeyEventArgs e)
         {
-            SbizClientKeyHandler.KeyUp(e);
+            SbizClientKeyHandler.KeyUp(e, this.Handle);
         }
         private void SbizClientRunningUC_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {

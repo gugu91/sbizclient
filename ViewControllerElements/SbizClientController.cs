@@ -112,12 +112,12 @@ namespace Sbiz.Client
             NativeImport.AddClipboardFormatListener(_clipboard_listener_control_handle);
             SbizClientAnnounceReceivingModel.Start(15001);//TODO add configuration for port
         }
-        public static void Connect(System.Net.IPAddress ipaddress, int port)
+        public static void Connect(System.Net.IPAddress ipaddress, int port, IntPtr view_handle)
         {
             Running = true;
-            SbizClientMessageSendingModel.Connect(ipaddress,port);
+            SbizClientMessageSendingModel.Connect(ipaddress,port, view_handle);
         }
-        public static void Connect(string identifier)
+        public static void Connect(string identifier, IntPtr view_handle)
         {
             Running = true;
             System.Net.IPAddress ipaddress = null;
@@ -130,7 +130,7 @@ namespace Sbiz.Client
                     port = _announced_servers[identifier].TCPPort;
                 }
             }
-            SbizClientMessageSendingModel.Connect(ipaddress, port);
+            SbizClientMessageSendingModel.Connect(ipaddress, port, view_handle);
         }
         public static void MakeActive(string id)
         {
@@ -189,11 +189,12 @@ namespace Sbiz.Client
             }
         }
 
-        public static void WndProcOverride(System.Windows.Forms.Message m)
+        public static void WndProcOverride(System.Windows.Forms.Message m, IntPtr view_handle)
         {
             if (m.Msg == NativeImport.WM_CLIPBOARDUPDATE) //Handling clipboard data
             {
-                SbizClipboardHandler.SendClipboardData(System.Windows.Forms.Clipboard.GetDataObject());// Clipboard's data.
+                SbizClipboardHandler.SendClipboardData(System.Windows.Forms.Clipboard.GetDataObject(), 
+                    SbizClientController.OnModelChanged, view_handle);// Clipboard's data.
             }
         }
     }

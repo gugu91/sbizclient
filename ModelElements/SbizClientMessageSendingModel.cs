@@ -13,8 +13,8 @@ namespace Sbiz.Client
     {
         #region Attributes
         private static List<string> _buffer_list = new List<string>();
-        private static SbizMessageSender _active_sms;
-        private static Dictionary<String, SbizMessageSender> _connected_sms = new Dictionary<String, SbizMessageSender>();
+        private static SbizMessager _active_sms;
+        private static Dictionary<String, SbizMessager> _connected_sms = new Dictionary<String, SbizMessager>();
         #endregion 
 
         #region Properties
@@ -50,14 +50,14 @@ namespace Sbiz.Client
         {
             if (_connected_sms.ContainsKey(id)) _active_sms = _connected_sms[id];
         }
-        public static void Connect(System.Net.IPAddress ipaddress, int port)
+        public static void Connect(System.Net.IPAddress ipaddress, int port, IntPtr view_handle)
         {
-            SbizMessageSender tmp_scs = new SbizMessageSender(ipaddress, port);
+            SbizMessager tmp_scs = new SbizMessager(ipaddress, port);
 
             if (!_connected_sms.ContainsKey(tmp_scs.Identifier))
             {
                 _connected_sms.Add(tmp_scs.Identifier, tmp_scs);
-                tmp_scs.Connect();
+                tmp_scs.ConnectToServer(SbizClientController.OnModelChanged, view_handle);
                 _active_sms = tmp_scs;
             }
             else
@@ -68,7 +68,7 @@ namespace Sbiz.Client
         }
         public static void SendData(byte[] m)
         {
-            if (_active_sms != null) _active_sms.SendData(m);
+            if (_active_sms != null) _active_sms.SendData(m, SbizClientController.OnModelChanged);
         }
 
         public static void SendMessage(SbizMessage m)
@@ -77,14 +77,14 @@ namespace Sbiz.Client
         }
         public static void Stop()
         {
-            List<SbizMessageSender> l;
+            List<SbizMessager> l;
             lock(_connected_sms) l = _connected_sms.Values.ToList();
-            foreach (var element in l) element.ShutdownConnection();
+            foreach (var element in l) element.ShutdownConnectionWithServer(SbizClientController.OnModelChanged);
             _connected_sms.Clear(); //This should be superflous, elements removed from connection by remove disconnected delegate
         }
         public static void ShutdownConnection()
         {
-            if (_active_sms != null) _active_sms.ShutdownConnection();
+            if (_active_sms != null) _active_sms.ShutdownConnectionWithServer(SbizClientController.OnModelChanged);
             //Removed from the collection by the remove disconnected delegate
         }
         public static void RemoveDisconnected(object sender, SbizModelChanged_EventArgs ea)
