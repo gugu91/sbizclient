@@ -81,6 +81,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientPasswordUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientPasswordUC.Designer.cs">
+      <DependentUpon>SbizClientPasswordUC.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientRunningUC.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -176,7 +176,7 @@ namespace Sbiz.Client
         private void Connect(object sender, EventArgs e)
         {
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
-            SbizClientController.Connect(item.Name, this.SbizClientRunningView.Handle);
+            SbizClientController.Connect(item.Name, this.SbizClientRunningView.Handle, "password");
         }
 
         //This is actually used to disconnect from target

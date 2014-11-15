@@ -112,12 +112,12 @@ namespace Sbiz.Client
             NativeImport.AddClipboardFormatListener(_clipboard_listener_control_handle);
             SbizClientAnnounceReceivingModel.Start(15001);//TODO add configuration for port
         }
-        public static void Connect(System.Net.IPAddress ipaddress, int port, IntPtr view_handle)
+        public static void Connect(System.Net.IPAddress ipaddress, int port, IntPtr view_handle, string password)
         {
             Running = true;
-            SbizClientMessageSendingModel.Connect(ipaddress,port, view_handle);
+            SbizClientMessageSendingModel.Connect(ipaddress,port, view_handle, password);
         }
-        public static void Connect(string identifier, IntPtr view_handle)
+        public static void Connect(string identifier, IntPtr view_handle, string password)
         {
             Running = true;
             System.Net.IPAddress ipaddress = null;
@@ -130,7 +130,7 @@ namespace Sbiz.Client
                     port = _announced_servers[identifier].TCPPort;
                 }
             }
-            SbizClientMessageSendingModel.Connect(ipaddress, port, view_handle);
+            SbizClientMessageSendingModel.Connect(ipaddress, port, view_handle, password);
         }
         public static void MakeActive(string id)
         {

@@ -52,7 +52,7 @@ namespace Sbiz.Client
             if (_connected_sms.ContainsKey(id)) _active_sms = _connected_sms[id];
             SendData(SbizMessage.TargetToByteArray());
         }
-        public static void Connect(System.Net.IPAddress ipaddress, int port, IntPtr view_handle)
+        public static void Connect(System.Net.IPAddress ipaddress, int port, IntPtr view_handle, string password)
         {
             SendData(SbizMessage.NotTargetToByteArray());
             SbizMessager tmp_scs = new SbizMessager(ipaddress, port);
@@ -60,7 +60,7 @@ namespace Sbiz.Client
             if (!_connected_sms.ContainsKey(tmp_scs.Identifier))
             {
                 _connected_sms.Add(tmp_scs.Identifier, tmp_scs);
-                tmp_scs.ConnectToServer(SbizClientController.OnModelChanged, view_handle);
+                tmp_scs.ConnectToServer(SbizClientController.OnModelChanged, view_handle, password);
                 _active_sms = tmp_scs;
             }
             else
