@@ -2,17 +2,23 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Sbiz.Client.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SbizKeyValue" Type="System.Windows.Forms.Keys" Scope="User">
-      <Value Profile="(Default)">S</Value>
+    <Setting Name="SbizKeyFullscreen" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">F</Value>
     </Setting>
     <Setting Name="SbizKeyShift" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SbizKeyCtrl" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SbizKeyAlt" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SbizKeyNext" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">Tab</Value>
+    </Setting>
+    <Setting Name="SbizKey" Type="System.Windows.Forms.Keys" Scope="User">
+      <Value Profile="(Default)">S</Value>
     </Setting>
   </Settings>
 </SettingsFile>

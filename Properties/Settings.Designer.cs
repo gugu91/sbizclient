@@ -25,13 +25,13 @@ namespace Sbiz.Client.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("S")]
-        public global::System.Windows.Forms.Keys SbizKeyValue {
+        [global::System.Configuration.DefaultSettingValueAttribute("F")]
+        public global::System.Windows.Forms.Keys SbizKeyFullscreen {
             get {
-                return ((global::System.Windows.Forms.Keys)(this["SbizKeyValue"]));
+                return ((global::System.Windows.Forms.Keys)(this["SbizKeyFullscreen"]));
             }
             set {
-                this["SbizKeyValue"] = value;
+                this["SbizKeyFullscreen"] = value;
             }
         }
         
@@ -49,7 +49,7 @@ namespace Sbiz.Client.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool SbizKeyCtrl {
             get {
                 return ((bool)(this["SbizKeyCtrl"]));
@@ -61,13 +61,37 @@ namespace Sbiz.Client.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool SbizKeyAlt {
             get {
                 return ((bool)(this["SbizKeyAlt"]));
             }
             set {
                 this["SbizKeyAlt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Tab")]
+        public global::System.Windows.Forms.Keys SbizKeyNext {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["SbizKeyNext"]));
+            }
+            set {
+                this["SbizKeyNext"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("S")]
+        public global::System.Windows.Forms.Keys SbizKey {
+            get {
+                return ((global::System.Windows.Forms.Keys)(this["SbizKey"]));
+            }
+            set {
+                this["SbizKey"] = value;
             }
         }
     }

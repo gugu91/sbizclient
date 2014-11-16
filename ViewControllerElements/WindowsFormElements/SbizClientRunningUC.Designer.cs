@@ -86,7 +86,7 @@
         #endregion
 
         private System.Windows.Forms.Panel MainPanel;
-        private System.Windows.Forms.Label SbizClientRunningTextLabel;
+        public System.Windows.Forms.Label SbizClientRunningTextLabel;
 
     }
 }

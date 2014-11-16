@@ -11,8 +11,10 @@ using Sbiz.Library;
 
 namespace Sbiz.Client
 {
+    public delegate void SbizKeyHandler(int n, object sender, EventArgs e);
     public partial class SbizClientRunningUC : UserControl, SbizControl
     {
+        public SbizKeyHandler parent_key_handler;
         public SbizClientRunningUC()
         {
             InitializeComponent();
@@ -135,7 +137,9 @@ namespace Sbiz.Client
         }
         private void SbizClientRunningUC_KeyUp(object sender, KeyEventArgs e)
         {
-            SbizClientKeyHandler.KeyUp(e, this.Handle);
+            int n = SbizClientKeyHandler.KeyUp(e, this.Handle);
+
+            if (parent_key_handler != null && n != SbizKey.NOT_SBIZKEY) parent_key_handler(n, sender, e);
         }
         private void SbizClientRunningUC_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {

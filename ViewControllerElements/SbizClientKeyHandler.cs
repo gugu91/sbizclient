@@ -8,14 +8,31 @@ using Sbiz.Library;
 
 namespace Sbiz.Client
 {
+    public static class SbizKey
+    {
+        public const int NOT_SBIZKEY = 0;
+        public const int SBIZKEY = 3;
+        public const int FULLSCREEN = 1;
+        public const int NEXT_SERVER = 2;
+
+        public static int IsSbizKey(KeyEventArgs e)
+        {
+            if (e.Shift == Properties.Settings.Default.SbizKeyShift &&
+                e.Alt == Properties.Settings.Default.SbizKeyAlt &&
+                e.Control == Properties.Settings.Default.SbizKeyCtrl) //SbizModifiers down
+            {
+                if (e.KeyCode == Properties.Settings.Default.SbizKey) return SBIZKEY;
+            }
+
+            return SbizKey.NOT_SBIZKEY;
+        }
+    }
     static class SbizClientKeyHandler //TODO Add Keyboard shortcuts
     {
         #region Attributes
         private static int new_word = -1;
-        private static bool _shift_down = false;
-        private static bool _control_down = false;
-        private static bool _alt_down = false;
         private static Label _text_label;
+        private static bool _sbiz_key_down = false;
         #endregion
 
         #region View Updating Methods
@@ -105,6 +122,11 @@ namespace Sbiz.Client
         }
         #endregion
 
+        public static void NewWord()
+        {
+            new_word = -1;
+        }
+
         public static void ResetServerKeyboard()
         {
             foreach (var key in (Keys[]) Enum.GetValues(typeof(Keys)))
@@ -114,29 +136,41 @@ namespace Sbiz.Client
         }
         public static void KeyDown(KeyEventArgs e, IntPtr view_handle)
         {
-            if (IsSbizKey(e))
-            {
-                //Special Key Down
-            }
-            else
+            if (SbizKey.IsSbizKey(e) != SbizKey.SBIZKEY && !_sbiz_key_down)
             {
                 if (e.KeyCode == Keys.Menu) SendKeyDown(Keys.LMenu);
                 else SendKeyDown(e.KeyCode);
             }
         }
-        public static void KeyUp(KeyEventArgs e, IntPtr view_handle)
+        public static int KeyUp(KeyEventArgs e, IntPtr view_handle)
         {
-            if (IsSbizKey(e))
+            if (SbizKey.IsSbizKey(e) == SbizKey.SBIZKEY)
             {
                 //text_label.Text = "SbizKey Pressed";
-            }  
+                ResetServerKeyboard();
+                _sbiz_key_down = !_sbiz_key_down;
+
+                return SbizKey.SBIZKEY;
+            }
             else
             {
-                if (e.KeyCode == Keys.Menu)
+                if (!_sbiz_key_down)
                 {
-                    SendKeyUp(Keys.LMenu);
+                    if (e.KeyCode == Keys.Menu)
+                    {
+                        SendKeyUp(Keys.LMenu);
+                    }
+                    else SendKeyUp(e.KeyCode);
+
+                    return SbizKey.NOT_SBIZKEY;
                 }
-                else SendKeyUp(e.KeyCode);
+                else
+                {
+                    if (e.KeyCode == Properties.Settings.Default.SbizKeyFullscreen) return SbizKey.FULLSCREEN;
+                    else if (e.KeyCode == Properties.Settings.Default.SbizKeyNext) return SbizKey.NEXT_SERVER;
+
+                    return SbizKey.NOT_SBIZKEY;
+                }
             }
         }
 
@@ -164,13 +198,6 @@ namespace Sbiz.Client
         {
            if(IsAltGr(keyData)) return false;
            else return ((keyData & Keys.Alt) == Keys.Alt);
-        }
-        private static bool IsSbizKey(KeyEventArgs e)
-        {
-            return (e.Shift == Properties.Settings.Default.SbizKeyShift &&
-                e.Alt == Properties.Settings.Default.SbizKeyAlt &&
-                e.Control == Properties.Settings.Default.SbizKeyCtrl &&
-                e.KeyCode == Properties.Settings.Default.SbizKeyValue);
         }
         #endregion
     }

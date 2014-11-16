@@ -15,11 +15,14 @@ namespace Sbiz.Client
     {
         #region Attributes
         private string _target_id;
+        private bool _connected;
         #endregion
 
         public SbizClientForm()
         {
             InitializeComponent();
+            _connected = false;
+            SbizClientRunningView.parent_key_handler += this.SbizKeyHandler;
             SbizClientController.RegisterView(this);
             SbizClientController.Start(this.SbizClientRunningView.Handle);
         }
@@ -37,9 +40,17 @@ namespace Sbiz.Client
                 {
                     SbizClientRunningView.Enabled = true;
                     SbizClientRunningView.Focus();//otherwise won't get the input
-                    SbizClientConnectionStatusLabel.Text = "Connected";
+                    string name = "Connected";
+                    if (args.ExtraArg != null)
+                    {
+                        var announced = SbizClientController.AnnouncedServers;
+                        if(announced.ContainsKey((string)args.ExtraArg))
+                            name = "Connected to " + announced[(string)args.ExtraArg];
+                    }
+                    SbizClientConnectionStatusLabel.Text = name;
                     SbizClientConnectionStatusLabel.ForeColor = Color.Green;
                     SbizClientToggleFullscreenToolStrip.Enabled = true;
+                    _connected = true;
                     //FormBorderStyle = FormBorderStyle.None;
                     //WindowState = FormWindowState.Maximized;
                 }
@@ -48,6 +59,7 @@ namespace Sbiz.Client
                     SbizClientRunningView.Enabled = false;
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
+                    _connected = false;
                 }
                 else if (args.Status == SbizModelChanged_EventArgs.TRYING)
                 {
@@ -55,12 +67,13 @@ namespace Sbiz.Client
                     SbizClientConnectionStatusLabel.Text = "Connecting...";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Orange;
                 }
-                else if(args.Status == SbizModelChanged_EventArgs.ERROR)
+                else if(args.Status < 0) //errors
                 {
                     SbizClientRunningView.Enabled = false;
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
-                    MessageBox.Show(args.Error_message);
+                    if (args.Status != SbizModelChanged_EventArgs.PEER_SHUTDOWN || _connected) MessageBox.Show(args.Error_message);
+                    
                 }
                 else if (args.Status == SbizModelChanged_EventArgs.DISCOVERED_SERVER)
                 {
@@ -74,7 +87,7 @@ namespace Sbiz.Client
             Application.Exit(); //questo chiama implicitamente formclosing, il quale chiama cleanup
         }
 
-        private void SbizClientToggleFullscreen_Click(object sender, EventArgs e)
+        public void SbizClientToggleFullscreen_Click(object sender, EventArgs e)
         {
             if(WindowState == FormWindowState.Normal)
             {
@@ -166,17 +179,21 @@ namespace Sbiz.Client
             #endregion
         }
 
-        //TODO test this method
         private void ActiveChange(object sender, EventArgs e)
         {
+            SbizClientRunningView.Enabled = false;
             ToolStripMenuItem t = (ToolStripMenuItem)sender;
             SbizClientController.MakeActive(t.Name);
         }
 
         private void Connect(object sender, EventArgs e)
         {
+            _connected = false;
+            SbizClientRunningView.Enabled = false;
             ToolStripMenuItem item = (ToolStripMenuItem)sender;
-            SbizClientController.Connect(item.Name, this.SbizClientRunningView.Handle, "password");
+            SbizClientPasswordBox.Enabled = true;
+            SbizClientPasswordBox.Visible = true;
+            SbizClientPasswordBox.SetConnectParam(item.Name, item.Text, SbizClientRunningView);
         }
 
         //This is actually used to disconnect from target
@@ -188,7 +205,6 @@ namespace Sbiz.Client
         private void SbizClientForm_Deactivate(object sender, EventArgs e)
         {
             SbizClientKeyHandler.ResetServerKeyboard();
-            WindowState = FormWindowState.Minimized;
             NativeImport.UnhookSpecialKeys();
         }
 
@@ -196,6 +212,47 @@ namespace Sbiz.Client
         {
             NativeImport.HookSpecialKeys(SbizClientKeyHandler.SpecialKeysHandler);
         }
-}
+
+        private void SbizKeyHandler(int n, object sender, EventArgs e)
+        {
+            if (n > 0)//Special keys
+            {
+                if (n == SbizKey.FULLSCREEN) SbizClientToggleFullscreen_Click(sender, e);
+                if (n == SbizKey.NEXT_SERVER) SelectNextServer();
+            }
+        }
+
+        private void SelectNextServer()
+        {
+            int first = SbizClientServersToolStripMenuItem.DropDownItems.IndexOf(toolStripSeparator2) +1;
+            int last = SbizClientServersToolStripMenuItem.DropDownItems.IndexOf(toolStripSeparator3) -1;
+
+            if(last == first) //just one server
+            {
+                SbizClientRunningView.SbizClientRunningTextLabel.Text = "No other server connected";
+                SbizClientKeyHandler.NewWord();
+                return;
+            }
+
+            int current = -1;
+
+            for (int i = first; i <= last;  i++)
+            {
+                if (((ToolStripMenuItem)SbizClientServersToolStripMenuItem.DropDownItems[i]).Checked)
+                {
+                    current = i;
+                    ((ToolStripMenuItem)SbizClientServersToolStripMenuItem.DropDownItems[i]).Checked = false;
+                }
+            }
+
+            current++;
+            if(current < first || current > last) current = first;
+            var target = SbizClientServersToolStripMenuItem.DropDownItems[current];
+            ActiveChange(target, new EventArgs());
+            ((ToolStripMenuItem)SbizClientServersToolStripMenuItem.DropDownItems[current]).Checked = true;
+            SbizClientRunningView.SbizClientRunningTextLabel.Text = "Targeting " + target.Text;
+            SbizClientKeyHandler.NewWord();
+        }
+    }
  
 }

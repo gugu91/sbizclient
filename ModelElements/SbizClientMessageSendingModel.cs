@@ -49,7 +49,12 @@ namespace Sbiz.Client
         public static void MakeActive(string id)
         {
             SendData(SbizMessage.NotTargetToByteArray());
-            if (_connected_sms.ContainsKey(id)) _active_sms = _connected_sms[id];
+            if (_connected_sms.ContainsKey(id))
+            {
+                _active_sms = _connected_sms[id];
+                SbizClientController.OnModelChanged(_active_sms, new SbizModelChanged_EventArgs(SbizModelChanged_EventArgs.CONNECTED,
+                    "Connected to server", _active_sms.Identifier));
+            }
             SendData(SbizMessage.TargetToByteArray());
         }
         public static void Connect(System.Net.IPAddress ipaddress, int port, IntPtr view_handle, string password)
@@ -94,7 +99,7 @@ namespace Sbiz.Client
         }
         public static void RemoveDisconnected(object sender, SbizModelChanged_EventArgs ea)
         {
-            if (ea.Status == SbizModelChanged_EventArgs.NOT_CONNECTED || ea.Status == SbizModelChanged_EventArgs.ERROR)
+            if (ea.Status <= 0) //NOT_CONNECTED or ERROR
             {
                 string id = (string)ea.ExtraArg;
                 lock (_connected_sms)

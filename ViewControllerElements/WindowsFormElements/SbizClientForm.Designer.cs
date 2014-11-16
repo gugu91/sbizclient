@@ -51,6 +51,7 @@
             this.SbizClientStatusStrip = new System.Windows.Forms.StatusStrip();
             this.SbizClientConnectionStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.SbizClientRunningView = new Sbiz.Client.SbizClientRunningUC();
+            this.SbizClientPasswordBox = new Sbiz.Client.SbizClientPasswordUC();
             this.SbizClientPanel.SuspendLayout();
             this.SbizClientMenuStrip.SuspendLayout();
             this.SbizClientTableLayoutPanel.SuspendLayout();
@@ -64,6 +65,7 @@
             // 
             // SbizClientPanel
             // 
+            this.SbizClientPanel.Controls.Add(this.SbizClientPasswordBox);
             this.SbizClientPanel.Controls.Add(this.SbizClientRunningView);
             this.SbizClientPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SbizClientPanel.Location = new System.Drawing.Point(3, 23);
@@ -234,6 +236,19 @@
             this.SbizClientRunningView.Size = new System.Drawing.Size(441, 176);
             this.SbizClientRunningView.TabIndex = 5;
             // 
+            // SbizClientPasswordBox
+            // 
+            this.SbizClientPasswordBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SbizClientPasswordBox.AutoSize = true;
+            this.SbizClientPasswordBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SbizClientPasswordBox.Enabled = false;
+            this.SbizClientPasswordBox.Location = new System.Drawing.Point(70, 3);
+            this.SbizClientPasswordBox.Name = "SbizClientPasswordBox";
+            this.SbizClientPasswordBox.Size = new System.Drawing.Size(309, 100);
+            this.SbizClientPasswordBox.TabIndex = 6;
+            this.SbizClientPasswordBox.Visible = false;
+            // 
             // SbizClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -286,6 +301,7 @@
         private System.Windows.Forms.ToolStripMenuItem noActiveConnectionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem noOtherServerOnThisNetworkToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private SbizClientPasswordUC SbizClientPasswordBox;
     }
 }
 
