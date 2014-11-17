@@ -73,7 +73,7 @@ namespace Sbiz.Client.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Tab")]
+        [global::System.Configuration.DefaultSettingValueAttribute("N")]
         public global::System.Windows.Forms.Keys SbizKeyNext {
             get {
                 return ((global::System.Windows.Forms.Keys)(this["SbizKeyNext"]));

@@ -118,6 +118,7 @@ namespace Sbiz.Client
         {
             if (IsLeftAlt(keyData)) return true;
             if (keyData == Keys.F10) return true;
+            if (keyData == Keys.Tab) return true;
             return false;
         }
         #endregion
