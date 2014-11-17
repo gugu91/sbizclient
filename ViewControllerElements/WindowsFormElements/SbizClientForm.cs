@@ -72,7 +72,7 @@ namespace Sbiz.Client
                     SbizClientRunningView.Enabled = false;
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
-                    if (args.Status != SbizModelChanged_EventArgs.PEER_SHUTDOWN || _connected) MessageBox.Show(args.Error_message);
+                    if (args.Status != SbizModelChanged_EventArgs.PEER_SHUTDOWN || _connected) SbizClientAlert.Alert(args.Error_message);
                     
                 }
                 else if (args.Status == SbizModelChanged_EventArgs.DISCOVERED_SERVER)

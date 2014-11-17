@@ -73,6 +73,12 @@
     <Compile Include="ViewControllerElements\SbizClientController.cs" />
     <Compile Include="ViewControllerElements\SbizClientKeyHandler.cs" />
     <Compile Include="ModelElements\SbizClientMessageSendingModel.cs" />
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientDisconnectedUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientDisconnectedUC.Designer.cs">
+      <DependentUpon>SbizClientDisconnectedUC.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +99,9 @@
     <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientRunningUC.Designer.cs">
       <DependentUpon>SbizClientRunningUC.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ViewControllerElements\WindowsFormElements\SbizClientDisconnectedUC.resx">
+      <DependentUpon>SbizClientDisconnectedUC.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ViewControllerElements\WindowsFormElements\SbizClientForm.resx">
       <DependentUpon>SbizClientForm.cs</DependentUpon>
     </EmbeddedResource>

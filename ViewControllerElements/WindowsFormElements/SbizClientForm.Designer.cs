@@ -50,8 +50,9 @@
             this.SbizClientTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.SbizClientStatusStrip = new System.Windows.Forms.StatusStrip();
             this.SbizClientConnectionStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.SbizClientRunningView = new Sbiz.Client.SbizClientRunningUC();
+            this.SbizClientAlert = new Sbiz.Client.ViewControllerElements.WindowsFormElements.SbizClientDisconnectedUC();
             this.SbizClientPasswordBox = new Sbiz.Client.SbizClientPasswordUC();
+            this.SbizClientRunningView = new Sbiz.Client.SbizClientRunningUC();
             this.SbizClientPanel.SuspendLayout();
             this.SbizClientMenuStrip.SuspendLayout();
             this.SbizClientTableLayoutPanel.SuspendLayout();
@@ -65,6 +66,7 @@
             // 
             // SbizClientPanel
             // 
+            this.SbizClientPanel.Controls.Add(this.SbizClientAlert);
             this.SbizClientPanel.Controls.Add(this.SbizClientPasswordBox);
             this.SbizClientPanel.Controls.Add(this.SbizClientRunningView);
             this.SbizClientPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -226,6 +228,33 @@
             this.SbizClientConnectionStatusLabel.Size = new System.Drawing.Size(88, 15);
             this.SbizClientConnectionStatusLabel.Text = "Not Connected";
             // 
+            // SbizClientAlert
+            // 
+            this.SbizClientAlert.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.SbizClientAlert.Enabled = false;
+            this.SbizClientAlert.Location = new System.Drawing.Point(66, 3);
+            this.SbizClientAlert.Name = "SbizClientAlert";
+            this.SbizClientAlert.Size = new System.Drawing.Size(314, 84);
+            this.SbizClientAlert.TabIndex = 7;
+            this.SbizClientAlert.Visible = false;
+            // 
+            // SbizClientPasswordBox
+            // 
+            this.SbizClientPasswordBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SbizClientPasswordBox.AutoSize = true;
+            this.SbizClientPasswordBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SbizClientPasswordBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.SbizClientPasswordBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SbizClientPasswordBox.Enabled = false;
+            this.SbizClientPasswordBox.Location = new System.Drawing.Point(70, 3);
+            this.SbizClientPasswordBox.MaximumSize = new System.Drawing.Size(310, 80);
+            this.SbizClientPasswordBox.MinimumSize = new System.Drawing.Size(310, 80);
+            this.SbizClientPasswordBox.Name = "SbizClientPasswordBox";
+            this.SbizClientPasswordBox.Size = new System.Drawing.Size(310, 80);
+            this.SbizClientPasswordBox.TabIndex = 6;
+            this.SbizClientPasswordBox.Visible = false;
+            // 
             // SbizClientRunningView
             // 
             this.SbizClientRunningView.AutoSize = true;
@@ -235,19 +264,6 @@
             this.SbizClientRunningView.Name = "SbizClientRunningView";
             this.SbizClientRunningView.Size = new System.Drawing.Size(441, 176);
             this.SbizClientRunningView.TabIndex = 5;
-            // 
-            // SbizClientPasswordBox
-            // 
-            this.SbizClientPasswordBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.SbizClientPasswordBox.AutoSize = true;
-            this.SbizClientPasswordBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SbizClientPasswordBox.Enabled = false;
-            this.SbizClientPasswordBox.Location = new System.Drawing.Point(70, 3);
-            this.SbizClientPasswordBox.Name = "SbizClientPasswordBox";
-            this.SbizClientPasswordBox.Size = new System.Drawing.Size(309, 100);
-            this.SbizClientPasswordBox.TabIndex = 6;
-            this.SbizClientPasswordBox.Visible = false;
             // 
             // SbizClientForm
             // 
@@ -302,6 +318,7 @@
         private System.Windows.Forms.ToolStripMenuItem noOtherServerOnThisNetworkToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private SbizClientPasswordUC SbizClientPasswordBox;
+        private ViewControllerElements.WindowsFormElements.SbizClientDisconnectedUC SbizClientAlert;
     }
 }
 
