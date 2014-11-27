@@ -99,6 +99,12 @@
     <Compile Include="ViewControllerElements\WindowsFormElements\SbizClientRunningUC.Designer.cs">
       <DependentUpon>SbizClientRunningUC.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewControllerElements\WindowsFormElements\SbizInfo.Designer.cs">
+      <DependentUpon>SbizInfo.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ViewControllerElements\WindowsFormElements\SbizClientDisconnectedUC.resx">
       <DependentUpon>SbizClientDisconnectedUC.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ViewControllerElements\WindowsFormElements\SbizClientRunningUC.resx">
       <DependentUpon>SbizClientRunningUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewControllerElements\WindowsFormElements\SbizInfo.resx">
+      <DependentUpon>SbizInfo.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
@@ -151,6 +160,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

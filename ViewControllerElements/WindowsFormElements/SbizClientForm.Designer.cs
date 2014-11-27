@@ -188,8 +188,9 @@
             // SbizClientInfoToolStrip
             // 
             this.SbizClientInfoToolStrip.Name = "SbizClientInfoToolStrip";
-            this.SbizClientInfoToolStrip.Size = new System.Drawing.Size(147, 22);
-            this.SbizClientInfoToolStrip.Text = "SbizClientInfo";
+            this.SbizClientInfoToolStrip.Size = new System.Drawing.Size(131, 22);
+            this.SbizClientInfoToolStrip.Text = "About Sbiz";
+            this.SbizClientInfoToolStrip.Click += new System.EventHandler(this.SbizClientInfoClick);
             // 
             // SbizClientTableLayoutPanel
             // 
@@ -218,6 +219,7 @@
             this.SbizClientStatusStrip.Location = new System.Drawing.Point(0, 202);
             this.SbizClientStatusStrip.Name = "SbizClientStatusStrip";
             this.SbizClientStatusStrip.Size = new System.Drawing.Size(447, 20);
+            this.SbizClientStatusStrip.SizingGrip = false;
             this.SbizClientStatusStrip.TabIndex = 5;
             this.SbizClientStatusStrip.Text = "statusStrip1";
             // 

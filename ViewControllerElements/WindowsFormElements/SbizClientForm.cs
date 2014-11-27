@@ -51,12 +51,14 @@ namespace Sbiz.Client
                     SbizClientConnectionStatusLabel.ForeColor = Color.Green;
                     SbizClientToggleFullscreenToolStrip.Enabled = true;
                     _connected = true;
-                    //FormBorderStyle = FormBorderStyle.None;
-                    //WindowState = FormWindowState.Maximized;
+                    FormBorderStyle = FormBorderStyle.None;
+                    WindowState = FormWindowState.Maximized;
                 }
                 else if(args.Status == SbizModelChanged_EventArgs.NOT_CONNECTED)
                 {
                     SbizClientRunningView.Enabled = false;
+                    FormBorderStyle = FormBorderStyle.Fixed3D;
+                    WindowState = FormWindowState.Normal;
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
                     _connected = false;
@@ -71,6 +73,8 @@ namespace Sbiz.Client
                 {
                     SbizClientRunningView.Enabled = false;
                     SbizClientConnectionStatusLabel.Text = "Not Connected";
+                    FormBorderStyle = FormBorderStyle.Fixed3D;
+                    WindowState = FormWindowState.Normal;
                     SbizClientConnectionStatusLabel.ForeColor = Color.Red;
                     if (args.Status != SbizModelChanged_EventArgs.PEER_SHUTDOWN || _connected) SbizClientAlert.Alert(args.Error_message);
                     
@@ -252,6 +256,12 @@ namespace Sbiz.Client
             ((ToolStripMenuItem)SbizClientServersToolStripMenuItem.DropDownItems[current]).Checked = true;
             SbizClientRunningView.SbizClientRunningTextLabel.Text = "Targeting " + target.Text;
             SbizClientKeyHandler.NewWord();
+        }
+
+        private void SbizClientInfoClick(object sender, EventArgs e)
+        {
+            var popup = new SbizInfo();
+            popup.ShowDialog(this);
         }
     }
  
