@@ -15,7 +15,6 @@ namespace Sbiz.Client
         public SbizInfo()
         {
             InitializeComponent();
-            FormBorderStyle = FormBorderStyle.Fixed3D;
         }
     }
 }

@@ -147,7 +147,7 @@ namespace Sbiz.Client
         {
             if (SbizKey.IsSbizKey(e) == SbizKey.SBIZKEY)
             {
-                //text_label.Text = "SbizKey Pressed";
+                //_text_label.Text = "SbizKey Pressed";
                 ResetServerKeyboard();
                 _sbiz_key_down = !_sbiz_key_down;
 

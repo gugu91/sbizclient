@@ -263,6 +263,12 @@ namespace Sbiz.Client
             var popup = new SbizInfo();
             popup.ShowDialog(this);
         }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var popup = new SbizSettingsForm();
+            popup.ShowDialog(this);
+        }
     }
  
 }
