@@ -27,7 +27,7 @@ namespace Sbiz.Client
             EndPoint ipe = new IPEndPoint(IPAddress.Any, UDPPort);
             s_announce = new Socket(ipe.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
             s_announce.Bind(ipe); //TODO Handle bind exception
-            byte[] buffer = new byte[256];//TODO change this buffer size dynamically
+            byte[] buffer = new byte[256];
             RecvFromState state = new RecvFromState(s_announce, buffer, ipe, UDPPort);
             s_announce.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref ipe, BeginRecvFromCallback, state);
         }

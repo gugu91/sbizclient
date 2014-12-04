@@ -110,7 +110,7 @@ namespace Sbiz.Client
             ModelChanged += SbizClientMessageSendingModel.RemoveDisconnected;
             _clipboard_listener_control_handle = clipboard_listener_control_handle;
             NativeImport.AddClipboardFormatListener(_clipboard_listener_control_handle);
-            SbizClientAnnounceReceivingModel.Start(15001);//TODO add configuration for port
+            SbizClientAnnounceReceivingModel.Start(Properties.Settings.Default.SbizInputUDPPort);//TODO add configuration for port
         }
         public static void Connect(System.Net.IPAddress ipaddress, int port, IntPtr view_handle, string password)
         {
@@ -180,6 +180,8 @@ namespace Sbiz.Client
                     if (_announced_servers.ContainsKey(serv.Identifier))
                     {
                         _announced_servers[serv.Identifier].LastSeen = DateTime.Now;
+                        if (!_announced_servers[serv.Identifier].Name.Equals(serv.Name))
+                            _announced_servers[serv.Identifier].Name = serv.Name;
                     }
                     else
                     {

@@ -19,6 +19,10 @@ namespace Sbiz.Client
             {
                 return _name;
             }
+            set
+            {
+                _name = value;
+            }
         }
         public System.Net.IPAddress IpAdd
         {

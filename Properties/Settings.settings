@@ -20,5 +20,8 @@
     <Setting Name="SbizKey" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">S</Value>
     </Setting>
+    <Setting Name="SbizInputUDPPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15001</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
