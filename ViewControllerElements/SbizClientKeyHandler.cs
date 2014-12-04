@@ -33,6 +33,7 @@ namespace Sbiz.Client
         private static int new_word = -1;
         private static Label _text_label;
         private static bool _sbiz_key_down = false;
+        private static List<Keys> keydownList = new List<Keys>();
         #endregion
 
         #region View Updating Methods
@@ -130,7 +131,8 @@ namespace Sbiz.Client
 
         public static void ResetServerKeyboard()
         {
-            foreach (var key in (Keys[]) Enum.GetValues(typeof(Keys)))
+            List<Keys> tmpList = new List<Keys>(keydownList);
+            foreach (var key in tmpList)
             {
                 SendKeyUp(key);
             }
@@ -181,12 +183,14 @@ namespace Sbiz.Client
             byte[] data = new byte[0];
             data = SbizNetUtils.EncapsulateInt16inByteArray(data, (Int16)key);//key are int16
             SbizClientController.ModelSetData(new SbizMessage(SbizMessageConst.KEY_UP, data));
+            keydownList.Remove(key);
         }
         public static void SendKeyDown(Keys key)
         {
             byte[] data = new byte[0];
             data = SbizNetUtils.EncapsulateInt16inByteArray(data, (Int16)key);
             SbizClientController.ModelSetData(new SbizMessage(SbizMessageConst.KEY_DOWN, data));
+            keydownList.Add(key);
         }
         #endregion
 
