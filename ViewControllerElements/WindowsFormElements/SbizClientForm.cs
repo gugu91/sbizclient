@@ -50,12 +50,14 @@ namespace Sbiz.Client
                     SbizClientConnectionStatusLabel.Text = name;
                     SbizClientConnectionStatusLabel.ForeColor = Color.Green;
                     SbizClientToggleFullscreenToolStrip.Enabled = true;
+                    settingsToolStripMenuItem.Enabled = false;
                     _connected = true;
                     FormBorderStyle = FormBorderStyle.None;
                     WindowState = FormWindowState.Maximized;
                 }
                 else if(args.Status == SbizModelChanged_EventArgs.NOT_CONNECTED)
                 {
+                    settingsToolStripMenuItem.Enabled = true;
                     SbizClientRunningView.Enabled = false;
                     FormBorderStyle = FormBorderStyle.Fixed3D;
                     WindowState = FormWindowState.Normal;
@@ -266,8 +268,15 @@ namespace Sbiz.Client
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            int port = Properties.Settings.Default.SbizInputUDPPort;
             var popup = new SbizSettingsForm();
             popup.ShowDialog(this);
+
+            if (port != Properties.Settings.Default.SbizInputUDPPort)
+            {
+                SbizClientController.Stop();
+                SbizClientController.Start(this.SbizClientRunningView.Handle);
+            }
         }
     }
  

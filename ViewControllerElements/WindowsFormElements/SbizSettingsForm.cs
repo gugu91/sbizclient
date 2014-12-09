@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Sbiz.Library;
 
 namespace Sbiz.Client
 {
@@ -33,6 +34,7 @@ namespace Sbiz.Client
             {
                 SbizClientShiftCheckBox.Checked = true;
             }
+            SbizClientInputUDPportNumericUpDown.Value = Convert.ToDecimal(Properties.Settings.Default.SbizInputUDPPort);
             SbizClientHotKeyComboBox.Text = Properties.Settings.Default.SbizKey.ToString();
             SbizClientFullscreenComboBox.Text = Properties.Settings.Default.SbizKeyFullscreen.ToString();
             SbizClientNextComboBox.Text = Properties.Settings.Default.SbizKeyNext.ToString();
@@ -165,6 +167,11 @@ namespace Sbiz.Client
         private void SbizClientHotKeyComboBox_Enter(object sender, EventArgs e)
         {
             _prev_hotkey_index = SbizClientHotKeyComboBox.SelectedIndex;
+        }
+
+        private void SbizClientInputUDPportNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {   
+            Properties.Settings.Default.SbizInputUDPPort = Convert.ToInt32(SbizClientInputUDPportNumericUpDown.Value);
         }
 
 

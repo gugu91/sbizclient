@@ -41,15 +41,21 @@
             this.SbizClientFullscreenComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.SbizClientHotKeyComboBox = new System.Windows.Forms.ComboBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
+            this.SbizClientInputUDPportNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SbizClientInputUDPportNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(2, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -257,6 +263,40 @@
             this.SbizClientHotKeyComboBox.SelectedIndexChanged += new System.EventHandler(this.SbizClientHotKeyComboBox_SelectedIndexChanged);
             this.SbizClientHotKeyComboBox.Enter += new System.EventHandler(this.SbizClientHotKeyComboBox_Enter);
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.label4);
+            this.tabPage3.Controls.Add(this.SbizClientInputUDPportNumericUpDown);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(259, 236);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Port";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(15, 20);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(78, 13);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Input UDP port";
+            // 
+            // SbizClientInputUDPportNumericUpDown
+            // 
+            this.SbizClientInputUDPportNumericUpDown.Location = new System.Drawing.Point(15, 39);
+            this.SbizClientInputUDPportNumericUpDown.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.SbizClientInputUDPportNumericUpDown.Name = "SbizClientInputUDPportNumericUpDown";
+            this.SbizClientInputUDPportNumericUpDown.Size = new System.Drawing.Size(120, 20);
+            this.SbizClientInputUDPportNumericUpDown.TabIndex = 0;
+            this.SbizClientInputUDPportNumericUpDown.ValueChanged += new System.EventHandler(this.SbizClientInputUDPportNumericUpDown_ValueChanged);
+            // 
             // SbizSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -277,6 +317,9 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SbizClientInputUDPportNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -295,6 +338,9 @@
         private System.Windows.Forms.ComboBox SbizClientHotKeyComboBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox SbizClientNextComboBox;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown SbizClientInputUDPportNumericUpDown;
 
     }
 }
